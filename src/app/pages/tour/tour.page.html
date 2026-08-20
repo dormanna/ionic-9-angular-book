@@ -1,0 +1,16 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tours"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ tour()?.title }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <p id="summary">{{ tour()?.summary }}</p>
+  <p id="price">{{ tour()?.price }} EUR / group</p>
+  <ion-button [routerLink]="['/tours', id(), 'request']">
+    <ion-label>Request this tour</ion-label>
+  </ion-button>
+</ion-content>

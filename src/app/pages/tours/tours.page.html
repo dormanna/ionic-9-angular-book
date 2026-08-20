@@ -1,0 +1,22 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Tours</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    @for (tour of tours; track tour.id) {
+      <ion-item [routerLink]="['/tours', tour.id]">
+        <ion-label>
+          <h2>{{ tour.title }}</h2>
+          <p>{{ tour.summary }}</p>
+        </ion-label>
+        <ion-note slot="end">{{ tour.duration }} min</ion-note>
+      </ion-item>
+    }
+  </ion-list>
+</ion-content>
