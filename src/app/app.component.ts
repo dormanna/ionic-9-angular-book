@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { IonApp, IonSplitPane, IonMenu, IonContent, IonList,
          IonListHeader, IonNote, IonMenuToggle, IonItem,
@@ -25,11 +25,11 @@ interface MenuEntry {
             IonRouterLink, IonRouterOutlet],
 })
 export class AppComponent {
-  readonly pages = signal<MenuEntry[]>([
+  readonly pages: MenuEntry[] = [
     { title: 'Home', url: '/home', icon: 'home' },
     { title: 'Tours', url: '/tours', icon: 'map' },
     { title: 'About', url: '/about', icon: 'information' },
-  ]);
+  ];
 
   constructor() {
     addIcons({

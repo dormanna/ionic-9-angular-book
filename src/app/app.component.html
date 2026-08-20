@@ -6,7 +6,7 @@
           <ion-list-header>BoB Tours</ion-list-header>
           <ion-note>Best of Bonn</ion-note>
 
-          @for (page of pages(); track page.url) {
+          @for (page of pages; track page.url) {
             <ion-menu-toggle auto-hide="false">
               <ion-item
                 routerDirection="root"
