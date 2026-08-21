@@ -5,40 +5,16 @@
     </ion-buttons>
     <ion-title>Tours</ion-title>
   </ion-toolbar>
-  <ion-toolbar>
-    <ion-searchbar
-      placeholder="Search tours"
-      [debounce]="0"
-      [value]="q()"
-      (ionInput)="narrow('q', $any($event).detail.value)">
-    </ion-searchbar>
-    <ion-select
-      label="Region"
-      [value]="region()"
-      (ionChange)="narrow('region', $any($event).detail.value)">
-      <ion-select-option value="">All regions</ion-select-option>
-      <ion-select-option value="BN">Bonn City</ion-select-option>
-      <ion-select-option value="SA">
-        Surroundings
-      </ion-select-option>
-      <ion-select-option value="SM">
-        Seven Mountains
-      </ion-select-option>
-    </ion-select>
-  </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  @if (isLoading() && !tours().length) {
-    <div class="ion-text-center ion-padding">
-      <ion-spinner></ion-spinner>
-    </div>
+  @if (isLoading()) {
+    <p class="ion-padding">Loading tours...</p>
   } @else if (error()) {
-    <ion-text color="danger">
-      <p class="ion-padding">
-        The tours could not be loaded. Is the API server running?
-      </p>
-    </ion-text>
+    <p class="ion-padding">
+      The tours could not be loaded. Is the API server
+      running?
+    </p>
   } @else {
     <ion-list>
       @for (tour of tours(); track tour.id) {
@@ -51,7 +27,7 @@
         </ion-item>
       } @empty {
         <ion-item>
-          <ion-label>No tour matches that.</ion-label>
+          <ion-label>No tours to show.</ion-label>
         </ion-item>
       }
     </ion-list>

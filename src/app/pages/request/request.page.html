@@ -9,23 +9,5 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-  <p>A form arrives in chapter 7. Until then,
-     one fixed request.</p>
-
-  <ion-button [disabled]="sending()" (click)="send()">
-    Send a request
-  </ion-button>
-
-  <ion-list>
-    @for (request of sent(); track request.ID) {
-      <ion-item>
-        <ion-label>Request #{{ request.ID }}</ion-label>
-        <ion-note slot="end">tour {{ request.tourId }}</ion-note>
-      </ion-item>
-    } @empty {
-      <ion-item>
-        <ion-label>Nothing sent yet.</ion-label>
-      </ion-item>
-    }
-  </ion-list>
+  <p>A form arrives in chapter 7.</p>
 </ion-content>

@@ -1,35 +1,14 @@
-import { Component, inject, input, signal } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { IonHeader, IonToolbar, IonTitle, IonContent,
-         IonButtons, IonBackButton, IonButton, IonList,
-         IonItem, IonLabel, IonNote }
+         IonButtons, IonBackButton }
         from '@ionic/angular';
-import { RequestService } from '../../services/request.service';
 
 @Component({
   selector: 'app-request',
   templateUrl: './request.page.html',
   imports: [IonHeader, IonToolbar, IonTitle, IonContent,
-            IonButtons, IonBackButton, IonButton, IonList,
-            IonItem, IonLabel, IonNote],
+            IonButtons, IonBackButton],
 })
 export class RequestPage {
-  private readonly requests = inject(RequestService);
-
   readonly id = input.required<string>();
-  readonly sent = this.requests.all;
-  readonly sending = signal(false);
-
-  async send(): Promise<void> {
-    this.sending.set(true);
-
-    try {
-      await this.requests.send({
-        tourId: this.id(),
-        name: 'Andreas',
-        people: 2,
-      });
-    } finally {
-      this.sending.set(false);
-    }
-  }
 }
