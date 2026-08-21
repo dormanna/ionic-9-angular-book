@@ -115,9 +115,17 @@
     }
   },
   "cli": {
-    "schematicCollections": ["@ionic/angular-toolkit"]
+    "schematicCollections": [
+      "@schematics/angular",
+      "@ionic/angular-toolkit"
+    ]
   },
   "schematics": {
+    "@schematics/angular:component": {
+      "type": "page",
+      "style": "none",
+      "skipTests": true
+    },
     "@ionic/angular-toolkit:component": {
       "styleext": "scss",
       "standalone": true

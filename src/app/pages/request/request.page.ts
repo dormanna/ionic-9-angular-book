@@ -11,11 +11,4 @@ import { IonHeader, IonToolbar, IonTitle, IonContent,
 })
 export class RequestPage {
   readonly id = input.required<string>();
-
-  ngOnInit() { console.log('Reqst ngOnInit', this.id()); }
-  ngOnDestroy() { console.log('Reqst ngOnDestroy'); }
-  ionViewWillEnter() { console.log('Reqst ionViewWillEnter'); }
-  ionViewDidEnter() { console.log('Reqst ionViewDidEnter'); }
-  ionViewWillLeave() { console.log('Reqst ionViewWillLeave'); }
-  ionViewDidLeave() { console.log('Reqst ionViewDidLeave'); }
 }

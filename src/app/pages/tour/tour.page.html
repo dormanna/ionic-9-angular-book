@@ -8,9 +8,9 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-  <p id="summary">{{ tour()?.summary }}</p>
-  <p id="price">{{ tour()?.price }} EUR / group</p>
+  <p>{{ tour()?.summary }}</p>
+  <p>{{ tour()?.price }} EUR / group</p>
   <ion-button [routerLink]="['/tours', id(), 'request']">
-    <ion-label>Request this tour</ion-label>
+    Request this tour
   </ion-button>
 </ion-content>
