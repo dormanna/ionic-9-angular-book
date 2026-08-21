@@ -1,18 +1,14 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, input } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router, RouterLink }
         from '@angular/router';
-import { debounceTime, distinctUntilChanged, map } from 'rxjs';
+import { debounceTime, map } from 'rxjs';
 import { IonHeader, IonToolbar, IonTitle, IonContent,
          IonButtons, IonMenuButton, IonList, IonItem,
          IonLabel, IonNote, IonRouterLink, IonSearchbar,
          IonSelect, IonSelectOption, IonSpinner, IonText }
         from '@ionic/angular';
-import { Criteria, TourService }
-        from '../../services/tour.service';
-
-const same = (a: Criteria, b: Criteria) =>
-  a.q === b.q && a.region === b.region;
+import { TourService } from '../../services/tour.service';
 
 @Component({
   selector: 'app-tours',
@@ -27,6 +23,9 @@ export class ToursPage {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
 
+  readonly q = input('');
+  readonly region = input('');
+
   readonly tours = this.service.all();
   readonly isLoading = this.service.isLoading;
   readonly error = this.service.error;
@@ -39,7 +38,6 @@ export class ToursPage {
           region: p['region'] ?? '',
         })),
         debounceTime(300),
-        distinctUntilChanged(same),
         takeUntilDestroyed(),
       )
       .subscribe((criteria) => this.service.narrowTo(criteria));

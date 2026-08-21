@@ -14,8 +14,6 @@ interface TourPayload {
   Description: string;
   Duration: number;
   PriceG: number;
-  Region: string;
-  Tourtype: string;
 }
 
 const toTour = (t: TourPayload): Tour => ({
@@ -24,8 +22,6 @@ const toTour = (t: TourPayload): Tour => ({
   summary: t.Description,
   duration: t.Duration,
   price: t.PriceG,
-  region: t.Region,
-  tourtype: t.Tourtype,
 });
 
 const urlFor = ({ q, region }: Criteria): string => {

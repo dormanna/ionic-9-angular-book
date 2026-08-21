@@ -19,7 +19,11 @@ export class RequestService {
     { defaultValue: [] },
   );
 
-  readonly all = linkedSignal(() => this.resource.value());
+  readonly all = linkedSignal(() =>
+    this.resource.hasValue()
+      ? this.resource.value()
+      : [],
+  );
 
   async send(request: TourRequest): Promise<TourRequest> {
     const stored = await firstValueFrom(

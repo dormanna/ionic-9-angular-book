@@ -9,11 +9,12 @@
     <ion-searchbar
       placeholder="Search tours"
       [debounce]="0"
+      [value]="q()"
       (ionInput)="narrow('q', $any($event).detail.value)">
     </ion-searchbar>
     <ion-select
       label="Region"
-      value=""
+      [value]="region()"
       (ionChange)="narrow('region', $any($event).detail.value)">
       <ion-select-option value="">All regions</ion-select-option>
       <ion-select-option value="BN">Bonn City</ion-select-option>

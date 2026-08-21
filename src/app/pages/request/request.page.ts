@@ -21,11 +21,15 @@ export class RequestPage {
 
   async send(): Promise<void> {
     this.sending.set(true);
-    await this.requests.send({
-      tourId: this.id(),
-      name: 'Andreas',
-      people: 2,
-    });
-    this.sending.set(false);
+
+    try {
+      await this.requests.send({
+        tourId: this.id(),
+        name: 'Andreas',
+        people: 2,
+      });
+    } finally {
+      this.sending.set(false);
+    }
   }
 }
