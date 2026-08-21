@@ -1,7 +1,7 @@
-import { Injectable, signal } from '@angular/core';
+import { Service, signal } from '@angular/core';
 import { Tour } from '../models/tour';
 
-@Injectable({ providedIn: 'root' })
+@Service()
 export class TourService {
   private readonly tours = signal<Tour[]>([
     { id: '1', title: 'Round Trip Bonn',
