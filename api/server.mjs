@@ -26,15 +26,37 @@ const readBody = async (req) => {
   return raw ? JSON.parse(raw) : {};
 };
 
-// /api/tours?q=rhine&region=SM — both optional.
+// /api/tours?q=rhine&region=SM&tourType=BO
+//           &minPrice=80&maxPrice=250 — all optional.
 const tours = (url) => {
-  const q = (url.searchParams.get('q') ?? '').toLowerCase();
-  const region = url.searchParams.get('region') ?? '';
+  const get = (name) => url.searchParams.get(name) ?? '';
+  const q = get('q').toLowerCase();
+  const region = get('region');
+  const type = get('tourType');
+  const min = Number(get('minPrice')) || 0;
+  const max = Number(get('maxPrice')) || Infinity;
   return db.tours.filter(
     (t) =>
       (!region || t.Region === region) &&
-      (!q || t.Title.toLowerCase().includes(q)),
+      (!type || t.Tourtype === type) &&
+      t.PriceG >= min &&
+      t.PriceG <= max &&
+      (!q ||
+        `${t.Title} ${t.Description}`
+          .toLowerCase()
+          .includes(q)),
   );
+};
+
+// The tour photographs, /api/img/big/city.jpg and
+// /api/img/small/city.jpg. No delay: the pictures are
+// not what the loading states are about.
+const image = async (path) => {
+  const m = /^\/api\/img\/(big|small)\/([\w-]+\.jpg)$/
+    .exec(path);
+  if (!m) return null;
+  const file = new URL(`./img/${m[1]}/${m[2]}`, import.meta.url);
+  return readFile(file).catch(() => null);
 };
 
 const routes = {
@@ -47,6 +69,15 @@ const routes = {
 const server = createServer(async (req, res) => {
   const url = new URL(req.url, `http://localhost:${PORT}`);
   const path = url.pathname;
+
+  if (req.method === 'GET') {
+    const picture = await image(path);
+    if (picture) {
+      res.writeHead(200, { 'Content-Type': 'image/jpeg' });
+      return res.end(picture);
+    }
+  }
+
   await new Promise((done) => setTimeout(done, DELAY));
 
   // Ask any route to fail, and see what your app makes of it:
