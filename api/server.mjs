@@ -26,8 +26,19 @@ const readBody = async (req) => {
   return raw ? JSON.parse(raw) : {};
 };
 
+// /api/tours?q=rhine&region=SM — both optional.
+const tours = (url) => {
+  const q = (url.searchParams.get('q') ?? '').toLowerCase();
+  const region = url.searchParams.get('region') ?? '';
+  return db.tours.filter(
+    (t) =>
+      (!region || t.Region === region) &&
+      (!q || t.Title.toLowerCase().includes(q)),
+  );
+};
+
 const routes = {
-  'GET /api/tours': () => db.tours,
+  'GET /api/tours': (url) => tours(url),
   'GET /api/regions': () => db.regions,
   'GET /api/tourtypes': () => db.tourtypes,
   'GET /api/requests': () => requests,
@@ -46,7 +57,7 @@ const server = createServer(async (req, res) => {
   }
 
   const route = routes[`${req.method} ${path}`];
-  if (route) return send(res, 200, route());
+  if (route) return send(res, 200, route(url));
 
   if (req.method === 'GET' && path.startsWith('/api/tours/')) {
     const id = Number(path.split('/').pop());
