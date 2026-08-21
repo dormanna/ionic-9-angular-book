@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { Tour } from '../models/tour';
 
 @Injectable({ providedIn: 'root' })
 export class TourService {
-  private readonly tours: Tour[] = [
+  private readonly tours = signal<Tour[]>([
     { id: '1', title: 'Round Trip Bonn',
       summary: 'The main sights, in one loop.',
       duration: 60, price: 90 },
@@ -16,13 +16,13 @@ export class TourService {
     { id: '11', title: 'The Seven Mountains',
       summary: 'Seven hills above the Rhine.',
       duration: 180, price: 160 },
-  ];
+  ]);
 
-  all(): Tour[] {
+  all() {
     return this.tours;
   }
 
   byId(id: string): Tour | undefined {
-    return this.tours.find((t) => t.id === id);
+    return this.tours().find((t) => t.id === id);
   }
 }

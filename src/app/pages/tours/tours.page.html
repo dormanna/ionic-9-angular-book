@@ -9,7 +9,7 @@
 
 <ion-content>
   <ion-list>
-    @for (tour of tours; track tour.id) {
+    @for (tour of tours(); track tour.id) {
       <ion-item [routerLink]="['/tours', tour.id]">
         <ion-label>
           <h2>{{ tour.title }}</h2>
