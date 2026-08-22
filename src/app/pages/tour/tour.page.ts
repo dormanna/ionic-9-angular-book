@@ -1,7 +1,7 @@
 import { Component, computed, inject, input, signal }
         from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { ActionSheetController, IonHeader, IonToolbar,
+import { AlertController, IonHeader, IonToolbar,
          IonTitle, IonContent, IonButtons, IonBackButton,
          IonButton, IonRouterLink } from '@ionic/angular';
 import { TourService } from '../../services/tour.service';
@@ -18,21 +18,21 @@ export class TourPage {
   readonly id = input.required<string>();
   readonly tour = computed(() => this.tours.byId(this.id()));
 
-  private readonly sheets = inject(ActionSheetController);
+  private readonly alerts = inject(AlertController);
   readonly chosen = signal('');
 
-  async openActions() {
-    const sheet = await this.sheets.create({
-      header: this.tour()?.title,
+  async askBeforeLeaving() {
+    const alert = await this.alerts.create({
+      header: 'Leave without sending?',
+      message: 'Your request has not been sent yet.',
       buttons: [
-        { text: 'Request this tour', role: 'request' },
-        { text: 'Remember this tour', role: 'remember' },
-        { text: 'Cancel', role: 'cancel' },
+        { text: 'Stay', role: 'cancel' },
+        { text: 'Leave', role: 'destructive' },
       ],
     });
-    await sheet.present();
+    await alert.present();
 
-    const { role } = await sheet.onDidDismiss();
+    const { role } = await alert.onDidDismiss();
     this.chosen.set(role ?? '');
   }
 }
