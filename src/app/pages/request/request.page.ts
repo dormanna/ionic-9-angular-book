@@ -4,15 +4,14 @@ import { RouterLink } from '@angular/router';
 import { IonHeader, IonToolbar, IonTitle, IonContent,
          IonButtons, IonBackButton, IonAccordion,
          IonAccordionGroup, IonItem, IonLabel,
-         IonBreadcrumbs, IonBreadcrumb,
-         IonRouterLinkWithHref }
+         IonBreadcrumbs, IonBreadcrumb, IonRouterLink }
         from '@ionic/angular';
 import { TourService } from '../../services/tour.service';
 
 @Component({
   selector: 'app-request',
   templateUrl: './request.page.html',
-  imports: [RouterLink, IonRouterLinkWithHref, IonHeader,
+  imports: [RouterLink, IonRouterLink, IonHeader,
             IonToolbar, IonTitle, IonContent, IonButtons,
             IonBackButton, IonAccordion, IonAccordionGroup,
             IonItem, IonLabel, IonBreadcrumbs,
