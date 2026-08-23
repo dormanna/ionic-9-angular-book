@@ -71,3 +71,6 @@ Thumbs.db
 
 # Written by the local API server while you use the app
 api/requests.json
+
+# Editor and agent configuration, not part of the app
+.claude/
