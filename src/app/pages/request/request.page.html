@@ -9,5 +9,28 @@
 </ion-header>
 
 <ion-content class="ion-padding">
+  @if (tour(); as tour) {
+    <ion-accordion-group>
+      <ion-accordion value="about">
+        <ion-item slot="header">
+          <ion-label>About this tour</ion-label>
+        </ion-item>
+        <div slot="content" class="ion-padding">
+          {{ tour.summary }}
+        </div>
+      </ion-accordion>
+
+      <ion-accordion value="facts">
+        <ion-item slot="header">
+          <ion-label>Key facts</ion-label>
+        </ion-item>
+        <div slot="content" class="ion-padding">
+          {{ tour.duration }} min,
+          {{ tour.price }} EUR / group
+        </div>
+      </ion-accordion>
+    </ion-accordion-group>
+  }
+
   <p>A form arrives in chapter 7.</p>
 </ion-content>
