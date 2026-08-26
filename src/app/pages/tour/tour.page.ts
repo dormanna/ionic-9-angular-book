@@ -17,6 +17,11 @@ import { FavoritesService }
 @Component({
   selector: 'app-tour',
   templateUrl: './tour.page.html',
+  styles: `
+    ion-fab {
+      margin-bottom: var(--ion-safe-area-bottom, 0);
+    }
+  `,
   imports: [RouterLink, IonRouterLink, IonHeader, IonToolbar,
             IonTitle, IonContent, IonButtons, IonBackButton,
             IonButton, IonIcon, IonCard, IonCardHeader,
