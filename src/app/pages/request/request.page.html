@@ -42,5 +42,30 @@
     </ion-accordion-group>
   }
 
-  <p>A form arrives in chapter 7.</p>
+  <h2>When would you like to go?</h2>
+
+  <ion-datetime
+    presentation="date-time"
+    hourValues="9,10,11,12,13,14,15,16,17"
+    minuteValues="0,30"
+    [min]="earliest"
+    [max]="latest"
+    [value]="request().date"
+    (ionChange)="setDate($event.detail.value)">
+  </ion-datetime>
+
+  <h2>How many people are coming?</h2>
+
+  <ion-picker>
+    <ion-picker-column
+      aria-label="Number of people"
+      [value]="request().people"
+      (ionChange)="setPeople($event.detail.value)">
+      @for (size of groupSizes(); track size) {
+        <ion-picker-column-option [value]="size">
+          {{ size }}
+        </ion-picker-column-option>
+      }
+    </ion-picker-column>
+  </ion-picker>
 </ion-content>
