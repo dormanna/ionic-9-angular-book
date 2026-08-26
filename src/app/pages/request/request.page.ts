@@ -22,7 +22,6 @@ const inDays = (days: number) => {
 @Component({
   selector: 'app-request',
   templateUrl: './request.page.html',
-  styles: 'h2 { font-size: 1.125rem; }',
   imports: [RouterLink, IonRouterLink, IonHeader,
             IonToolbar, IonTitle, IonContent, IonButtons,
             IonBackButton, IonAccordion, IonAccordionGroup,
