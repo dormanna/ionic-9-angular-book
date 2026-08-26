@@ -3,8 +3,8 @@ import { Component, computed, inject, input }
 import { RouterLink } from '@angular/router';
 import { IonHeader, IonToolbar, IonTitle, IonContent,
          IonButtons, IonBackButton, IonButton, IonIcon,
-         IonCard, IonCardHeader, IonCardSubtitle,
-         IonCardTitle, IonCardContent, IonRouterLink }
+         IonCard, IonCardHeader, IonCardTitle,
+         IonCardContent, IonRouterLink }
         from '@ionic/angular';
 import { addIcons } from 'ionicons';
 import { heart, heartOutline } from 'ionicons/icons';
@@ -18,7 +18,7 @@ import { FavoritesService }
   imports: [RouterLink, IonRouterLink, IonHeader, IonToolbar,
             IonTitle, IonContent, IonButtons, IonBackButton,
             IonButton, IonIcon, IonCard, IonCardHeader,
-            IonCardSubtitle, IonCardTitle, IonCardContent],
+            IonCardTitle, IonCardContent],
 })
 export class TourPage {
   private readonly tours = inject(TourService);

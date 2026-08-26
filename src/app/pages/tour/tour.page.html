@@ -23,19 +23,16 @@
 <ion-content>
   @if (tour(); as tour) {
     <ion-card>
-      <img
-        [src]="tour.imageUrl"
-        alt=""
-        decoding="async">
+      <img [src]="tour.imageUrl" alt="">
       <ion-card-header>
-        <ion-card-subtitle>
-          {{ tour.duration }} min
-        </ion-card-subtitle>
         <ion-card-title>{{ tour.title }}</ion-card-title>
       </ion-card-header>
       <ion-card-content>
         <p>{{ tour.summary }}</p>
-        <p>{{ tour.price }} EUR / group</p>
+        <p>
+          {{ tour.duration }} min,
+          {{ tour.price }} EUR / group
+        </p>
       </ion-card-content>
     </ion-card>
 
