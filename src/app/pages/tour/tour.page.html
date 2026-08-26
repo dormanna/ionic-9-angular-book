@@ -4,6 +4,19 @@
       <ion-back-button defaultHref="/tours"></ion-back-button>
     </ion-buttons>
     <ion-title>{{ tour()?.title }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button
+        (click)="toggleFavorite()"
+        [attr.aria-label]="isFavorite()
+          ? 'Remove from favourites'
+          : 'Add to favourites'">
+        <ion-icon
+          slot="icon-only"
+          aria-hidden="true"
+          [name]="isFavorite() ? 'heart' : 'heart-outline'">
+        </ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
