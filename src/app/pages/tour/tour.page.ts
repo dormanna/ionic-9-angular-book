@@ -9,7 +9,8 @@ import { IonHeader, IonToolbar, IonTitle, IonContent,
         from '@ionic/angular';
 import { addIcons } from 'ionicons';
 import { heart, heartOutline, timeOutline, peopleOutline,
-         cashOutline, mailOutline } from 'ionicons/icons';
+         cashOutline, paperPlaneOutline }
+        from 'ionicons/icons';
 import { TourService } from '../../services/tour.service';
 import { FavoritesService }
         from '../../services/favorites.service';
@@ -40,7 +41,8 @@ export class TourPage {
 
   constructor() {
     addIcons({ heart, heartOutline, timeOutline,
-               peopleOutline, cashOutline, mailOutline });
+               peopleOutline, cashOutline,
+               paperPlaneOutline });
   }
 
   toggleFavorite() {
