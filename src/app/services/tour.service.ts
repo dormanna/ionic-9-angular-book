@@ -8,6 +8,7 @@ interface TourPayload {
   Description: string;
   Image: string;
   Duration: number;
+  MaxPersons: number;
   PriceG: number;
 }
 
@@ -17,6 +18,7 @@ const toTour = (t: TourPayload): Tour => ({
   summary: t.Description,
   imageUrl: `/api/img/big/${t.Image}`,
   duration: t.Duration,
+  maxPersons: t.MaxPersons,
   price: t.PriceG,
 });
 

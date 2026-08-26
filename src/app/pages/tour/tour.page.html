@@ -29,10 +29,21 @@
       </ion-card-header>
       <ion-card-content>
         <p>{{ tour.summary }}</p>
-        <p>
-          {{ tour.duration }} min,
-          {{ tour.price }} EUR / group
-        </p>
+        <ion-chip>
+          <ion-icon name="time-outline" aria-hidden="true">
+          </ion-icon>
+          <span>{{ tour.duration }} min</span>
+        </ion-chip>
+        <ion-chip>
+          <ion-icon name="people-outline" aria-hidden="true">
+          </ion-icon>
+          <span>up to {{ tour.maxPersons }} people</span>
+        </ion-chip>
+        <ion-chip>
+          <ion-icon name="cash-outline" aria-hidden="true">
+          </ion-icon>
+          <span>{{ tour.price }} EUR / group</span>
+        </ion-chip>
       </ion-card-content>
     </ion-card>
 

@@ -1,14 +1,12 @@
-import { Component, signal } from '@angular/core';
+import { Component } from '@angular/core';
 import { IonHeader, IonToolbar, IonTitle, IonContent,
-         IonButtons, IonMenuButton, IonCheckbox }
+         IonButtons, IonMenuButton }
         from '@ionic/angular';
 
 @Component({
   selector: 'app-about',
   templateUrl: './about.page.html',
   imports: [IonHeader, IonToolbar, IonTitle, IonContent,
-            IonButtons, IonMenuButton, IonCheckbox],
+            IonButtons, IonMenuButton],
 })
-export class AboutPage {
-  readonly notify = signal(false);
-}
+export class AboutPage {}

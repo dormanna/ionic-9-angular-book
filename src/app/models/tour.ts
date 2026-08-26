@@ -4,5 +4,6 @@ export interface Tour {
   summary: string;
   imageUrl: string;
   duration: number;
+  maxPersons: number;
   price: number;
 }

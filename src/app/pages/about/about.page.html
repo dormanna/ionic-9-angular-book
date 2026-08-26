@@ -9,36 +9,4 @@
 
 <ion-content class="ion-padding">
   <p>About page.</p>
-
-  <ion-checkbox
-    class="ion-margin-bottom"
-    justify="space-between"
-    [checked]="notify()"
-    (ionChange)="notify.set($event.detail.checked)">
-    Email me about new tours
-  </ion-checkbox>
-
-  <p>The signal says {{ notify() }}.</p>
-
-  <ion-checkbox
-    class="ion-margin-bottom"
-    justify="space-between"
-    [checked]="true">
-    Checked
-  </ion-checkbox>
-
-  <ion-checkbox
-    class="ion-margin-bottom"
-    justify="space-between"
-    [indeterminate]="true">
-    Mixed
-  </ion-checkbox>
-
-  <ion-checkbox
-    class="ion-margin-bottom"
-    justify="space-between"
-    [checked]="true"
-    [disabled]="true">
-    Disabled
-  </ion-checkbox>
 </ion-content>
