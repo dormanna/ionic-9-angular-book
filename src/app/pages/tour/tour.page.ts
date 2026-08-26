@@ -4,11 +4,12 @@ import { RouterLink } from '@angular/router';
 import { IonHeader, IonToolbar, IonTitle, IonContent,
          IonButtons, IonBackButton, IonButton, IonIcon,
          IonCard, IonCardHeader, IonCardTitle,
-         IonCardContent, IonChip, IonRouterLink }
+         IonCardContent, IonChip, IonFab, IonFabButton,
+         IonRouterLink }
         from '@ionic/angular';
 import { addIcons } from 'ionicons';
 import { heart, heartOutline, timeOutline, peopleOutline,
-         cashOutline } from 'ionicons/icons';
+         cashOutline, mailOutline } from 'ionicons/icons';
 import { TourService } from '../../services/tour.service';
 import { FavoritesService }
         from '../../services/favorites.service';
@@ -19,7 +20,8 @@ import { FavoritesService }
   imports: [RouterLink, IonRouterLink, IonHeader, IonToolbar,
             IonTitle, IonContent, IonButtons, IonBackButton,
             IonButton, IonIcon, IonCard, IonCardHeader,
-            IonCardTitle, IonCardContent, IonChip],
+            IonCardTitle, IonCardContent, IonChip, IonFab,
+            IonFabButton],
 })
 export class TourPage {
   private readonly tours = inject(TourService);
@@ -33,7 +35,7 @@ export class TourPage {
 
   constructor() {
     addIcons({ heart, heartOutline, timeOutline,
-               peopleOutline, cashOutline });
+               peopleOutline, cashOutline, mailOutline });
   }
 
   toggleFavorite() {
