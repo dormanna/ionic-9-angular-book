@@ -6,6 +6,7 @@ interface TourPayload {
   ID: number;
   Title: string;
   Description: string;
+  Image: string;
   Duration: number;
   PriceG: number;
 }
@@ -14,6 +15,7 @@ const toTour = (t: TourPayload): Tour => ({
   id: String(t.ID),
   title: t.Title,
   summary: t.Description,
+  imageUrl: `/api/img/big/${t.Image}`,
   duration: t.Duration,
   price: t.PriceG,
 });

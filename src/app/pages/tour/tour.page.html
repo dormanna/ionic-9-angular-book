@@ -20,10 +20,31 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
-  <p>{{ tour()?.summary }}</p>
-  <p>{{ tour()?.price }} EUR / group</p>
-  <ion-button [routerLink]="['/tours', id(), 'request']">
-    Request this tour
-  </ion-button>
+<ion-content>
+  @if (tour(); as tour) {
+    <ion-card>
+      <img
+        [src]="tour.imageUrl"
+        [alt]="tour.title"
+        decoding="async">
+      <ion-card-header>
+        <ion-card-subtitle>
+          {{ tour.duration }} min
+        </ion-card-subtitle>
+        <ion-card-title>{{ tour.title }}</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <p>{{ tour.summary }}</p>
+        <p>{{ tour.price }} EUR / group</p>
+      </ion-card-content>
+    </ion-card>
+
+    <div class="ion-padding">
+      <ion-button
+        expand="block"
+        [routerLink]="['/tours', id(), 'request']">
+        Request this tour
+      </ion-button>
+    </div>
+  }
 </ion-content>
