@@ -44,30 +44,55 @@
 
   <h2>When would you like to go?</h2>
 
-  <ion-datetime
-    presentation="date-time"
-    hourValues="9,10,11,12,13,14,15,16,17"
-    minuteValues="0,30"
-    [min]="earliest"
-    [max]="latest"
-    [value]="request().date"
-    (ionChange)="setDate($event.detail.value)">
-  </ion-datetime>
+  <ion-datetime-button datetime="when"></ion-datetime-button>
+
+  <ion-modal
+    [keepContentsMounted]="true"
+    aria-label="Date and time">
+    <ng-template>
+      <ion-datetime
+        id="when"
+        presentation="date-time"
+        hourValues="9,10,11,12,13,14,15,16,17"
+        minuteValues="0,30"
+        [min]="earliest"
+        [max]="latest"
+        [value]="request().date"
+        (ionChange)="setDate($event.detail.value)">
+      </ion-datetime>
+    </ng-template>
+  </ion-modal>
 
   <h2>How many people?</h2>
 
-  <ion-picker>
-    <ion-picker-column
-      aria-label="Number of people"
-      [value]="request().people"
-      (ionChange)="setPeople($event.detail.value)">
-      @for (size of groupSizes(); track size) {
-        <ion-picker-column-option [value]="size">
-          {{ size }}
-        </ion-picker-column-option>
-      }
-    </ion-picker-column>
-  </ion-picker>
+  <ion-button id="people" fill="solid" color="light">
+    {{ request().people }}
+    {{ request().people === 1 ? 'person' : 'people' }}
+  </ion-button>
+
+  <ion-modal
+    trigger="people"
+    aria-label="Number of people"
+    [breakpoints]="[0, 0.3]"
+    [handle]="false"
+    initialBreakpoint="0.3">
+    <ng-template>
+      <ion-content>
+        <ion-picker>
+          <ion-picker-column
+            aria-label="Number of people"
+            [value]="request().people"
+            (ionChange)="setPeople($event.detail.value)">
+            @for (size of groupSizes(); track size) {
+              <ion-picker-column-option [value]="size">
+                {{ size }}
+              </ion-picker-column-option>
+            }
+          </ion-picker-column>
+        </ion-picker>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
 
   <h2>Who is asking?</h2>
 
