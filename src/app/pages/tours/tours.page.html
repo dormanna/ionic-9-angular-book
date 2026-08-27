@@ -24,7 +24,7 @@
   } @else {
     <ion-list>
       @for (tour of tours(); track tour.id) {
-        <ion-item [routerLink]="['/tours', tour.id]">
+        <ion-item detail="true" [routerLink]="['/tours', tour.id]">
           <ion-thumbnail slot="start">
             <img
               [src]="tour.thumbnailUrl"
