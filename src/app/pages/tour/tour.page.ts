@@ -5,7 +5,7 @@ import { IonHeader, IonToolbar, IonTitle, IonContent,
          IonButtons, IonBackButton, IonButton, IonIcon,
          IonCard, IonCardHeader, IonCardTitle,
          IonCardContent, IonChip, IonFab, IonFabButton,
-         IonRouterLink }
+         IonGrid, IonRow, IonCol, IonRouterLink }
         from '@ionic/angular';
 import { addIcons } from 'ionicons';
 import { heart, heartOutline, timeOutline, peopleOutline,
@@ -27,7 +27,7 @@ import { FavoritesService }
             IonTitle, IonContent, IonButtons, IonBackButton,
             IonButton, IonIcon, IonCard, IonCardHeader,
             IonCardTitle, IonCardContent, IonChip, IonFab,
-            IonFabButton],
+            IonFabButton, IonGrid, IonRow, IonCol],
 })
 export class TourPage {
   private readonly tours = inject(TourService);
