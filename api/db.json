@@ -417,19 +417,19 @@
     },
     {
       "ID": "SA",
-      "Icon": "rose",
+      "Icon": "flower",
       "Name": "Bonn's Surrounding Areas"
     },
     {
       "ID": "SM",
-      "Icon": "image",
+      "Icon": "triangle",
       "Name": "The Seven Mountains"
     }
   ],
   "tourtypes": [
     {
       "ID": "SE",
-      "Icon": "logo-skype",
+      "Icon": "speedometer",
       "Name": "Segway Tours"
     },
     {
@@ -439,7 +439,7 @@
     },
     {
       "ID": "RO",
-      "Icon": "refresh-circle",
+      "Icon": "sync-circle",
       "Name": "Round Trips"
     },
     {
