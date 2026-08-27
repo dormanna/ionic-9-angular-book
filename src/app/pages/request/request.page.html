@@ -107,9 +107,11 @@
     fill="outline"
     label="Anything we should know?"
     label-placement="stacked"
-    helper-text="We answer within one working day."
+    helper-text="Optional — add any special requests."
     auto-grow="true"
     [value]="request().message"
     (ionInput)="patch({ message: $event.detail.value ?? '' })">
   </ion-textarea>
+
+  <p>We answer within one working day.</p>
 </ion-content>
