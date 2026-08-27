@@ -6,7 +6,7 @@ import { IonHeader, IonToolbar, IonTitle, IonContent,
          IonAccordionGroup, IonItem, IonLabel,
          IonBreadcrumbs, IonBreadcrumb, IonDatetime,
          IonPicker, IonPickerColumn, IonPickerColumnOption,
-         IonRouterLink }
+         IonInput, IonTextarea, IonRouterLink }
         from '@ionic/angular';
 import { TourService } from '../../services/tour.service';
 import { TourRequest } from '../../models/request';
@@ -27,7 +27,8 @@ const inDays = (days: number) => {
             IonBackButton, IonAccordion, IonAccordionGroup,
             IonItem, IonLabel, IonBreadcrumbs,
             IonBreadcrumb, IonDatetime, IonPicker,
-            IonPickerColumn, IonPickerColumnOption],
+            IonPickerColumn, IonPickerColumnOption,
+            IonInput, IonTextarea],
 })
 export class RequestPage {
   private readonly tours = inject(TourService);
@@ -41,6 +42,10 @@ export class RequestPage {
   readonly request = signal<TourRequest>({
     date: null,
     people: 1,
+    firstName: '',
+    lastName: '',
+    email: '',
+    message: '',
   });
 
   readonly groupSizes = computed(() =>
@@ -50,17 +55,19 @@ export class RequestPage {
     ),
   );
 
+  patch(part: Partial<TourRequest>) {
+    this.request.update((r) => ({ ...r, ...part }));
+  }
+
   setDate(value: string | string[] | null | undefined) {
-    this.request.update((r) => ({
-      ...r,
+    this.patch({
       date: typeof value === 'string' ? value : null,
-    }));
+    });
   }
 
   setPeople(value: string | number | undefined) {
-    this.request.update((r) => ({
-      ...r,
-      people: typeof value === 'number' ? value : r.people,
-    }));
+    if (typeof value === 'number') {
+      this.patch({ people: value });
+    }
   }
 }

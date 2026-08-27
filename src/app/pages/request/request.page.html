@@ -68,4 +68,48 @@
       }
     </ion-picker-column>
   </ion-picker>
+
+  <h2>Who is asking?</h2>
+
+  <ion-input
+    class="ion-margin-bottom"
+    fill="outline"
+    label="First name"
+    label-placement="stacked"
+    autocomplete="given-name"
+    [value]="request().firstName"
+    (ionInput)="patch({ firstName: $event.detail.value ?? '' })">
+  </ion-input>
+
+  <ion-input
+    class="ion-margin-bottom"
+    fill="outline"
+    label="Last name"
+    label-placement="stacked"
+    autocomplete="family-name"
+    [value]="request().lastName"
+    (ionInput)="patch({ lastName: $event.detail.value ?? '' })">
+  </ion-input>
+
+  <ion-input
+    class="ion-margin-bottom"
+    fill="outline"
+    type="email"
+    label="Email"
+    label-placement="stacked"
+    autocomplete="email"
+    [value]="request().email"
+    (ionInput)="patch({ email: $event.detail.value ?? '' })">
+  </ion-input>
+
+  <ion-textarea
+    class="ion-margin-bottom"
+    fill="outline"
+    label="Anything we should know?"
+    label-placement="stacked"
+    helper-text="We answer within one working day."
+    auto-grow="true"
+    [value]="request().message"
+    (ionInput)="patch({ message: $event.detail.value ?? '' })">
+  </ion-textarea>
 </ion-content>
