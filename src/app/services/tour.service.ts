@@ -17,6 +17,7 @@ const toTour = (t: TourPayload): Tour => ({
   title: t.Title,
   summary: t.Description,
   imageUrl: `/api/img/big/${t.Image}`,
+  thumbnailUrl: `/api/img/small/${t.Image}`,
   duration: t.Duration,
   maxPersons: t.MaxPersons,
   price: t.PriceG,

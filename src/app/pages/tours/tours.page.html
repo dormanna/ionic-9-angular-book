@@ -25,6 +25,13 @@
     <ion-list>
       @for (tour of tours(); track tour.id) {
         <ion-item [routerLink]="['/tours', tour.id]">
+          <ion-thumbnail slot="start">
+            <img
+              [src]="tour.thumbnailUrl"
+              alt=""
+              loading="lazy"
+              decoding="async">
+          </ion-thumbnail>
           <ion-label>
             <h2>{{ tour.title }}</h2>
             <p>{{ tour.price }} EUR / group</p>
