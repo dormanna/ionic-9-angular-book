@@ -8,5 +8,25 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-  <p>About page.</p>
+  <p>
+    BoB Tours is a dedicated and successful company that
+    wants to show you the sights and attractions of Bonn
+    and its surroundings.
+  </p>
+
+  <p>BoB Tours is fictional. The beauty of Bonn is not.</p>
+
+  <ion-button id="colophon" fill="clear">
+    Developer &amp; technology
+  </ion-button>
+
+  <ion-popover trigger="colophon">
+    <ng-template>
+      <ion-content class="ion-padding">
+        <h2>Behind BoB Tours</h2>
+        <p>Developed and photographed by Andreas Dormann</p>
+        <p>Built with love, Ionic 9 and Angular 22</p>
+      </ion-content>
+    </ng-template>
+  </ion-popover>
 </ion-content>

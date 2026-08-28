@@ -1,12 +1,14 @@
 import { Component } from '@angular/core';
 import { IonHeader, IonToolbar, IonTitle, IonContent,
-         IonButtons, IonMenuButton }
+         IonButtons, IonMenuButton, IonButton,
+         IonPopover }
         from '@ionic/angular';
 
 @Component({
   selector: 'app-about',
   templateUrl: './about.page.html',
   imports: [IonHeader, IonToolbar, IonTitle, IonContent,
-            IonButtons, IonMenuButton],
+            IonButtons, IonMenuButton, IonButton,
+            IonPopover],
 })
 export class AboutPage {}
