@@ -15,12 +15,20 @@
 
 <ion-content>
   @if (isLoading()) {
-    <p class="ion-padding">Loading tours...</p>
+    <div class="ion-padding ion-text-center">
+      <ion-spinner
+        name="crescent"
+        color="primary"
+        aria-hidden="true">
+      </ion-spinner>
+      <p role="status">Loading tours</p>
+    </div>
   } @else if (error()) {
-    <p class="ion-padding">
-      The tours could not be loaded. Is the API server
-      running?
-    </p>
+    <ion-text color="danger">
+      <p class="ion-padding" role="status">
+        The tours could not be loaded.
+      </p>
+    </ion-text>
   } @else {
     <ion-list>
       @for (tour of tours(); track tour.id) {

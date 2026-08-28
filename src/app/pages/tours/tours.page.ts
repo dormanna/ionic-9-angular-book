@@ -3,7 +3,7 @@ import { RouterLink } from '@angular/router';
 import { IonHeader, IonToolbar, IonTitle, IonContent,
          IonButtons, IonMenuButton, IonList, IonItem,
          IonLabel, IonNote, IonRouterLink, IonBadge,
-         IonThumbnail }
+         IonThumbnail, IonSpinner, IonText }
         from '@ionic/angular';
 import { TourService } from '../../services/tour.service';
 
@@ -13,7 +13,7 @@ import { TourService } from '../../services/tour.service';
   imports: [RouterLink, IonRouterLink, IonHeader, IonToolbar,
             IonTitle, IonContent, IonButtons, IonMenuButton,
             IonList, IonItem, IonLabel, IonNote, IonBadge,
-            IonThumbnail],
+            IonThumbnail, IonSpinner, IonText],
 })
 export class ToursPage {
   private readonly service = inject(TourService);
