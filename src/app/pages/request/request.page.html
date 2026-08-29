@@ -94,6 +94,20 @@
     </ng-template>
   </ion-modal>
 
+  <h2 id="language">Which language?</h2>
+
+  <ion-radio-group
+    aria-labelledby="language"
+    [value]="request().language"
+    (ionChange)="patch({ language: $event.detail.value })">
+    <ion-radio value="de" labelPlacement="end" justify="start">
+      German
+    </ion-radio>
+    <ion-radio value="en" labelPlacement="end" justify="start">
+      English
+    </ion-radio>
+  </ion-radio-group>
+
   <h2>Who is asking?</h2>
 
   <ion-input
