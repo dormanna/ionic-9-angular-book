@@ -14,6 +14,26 @@
 </ion-header>
 
 <ion-content>
+  <div class="ion-padding-horizontal">
+    <ion-range
+      label="Group price"
+      aria-label="Group price in EUR per group"
+      [min]="cheapest"
+      [max]="dearest"
+      step="20"
+      pin="true"
+      [value]="maxPrice()"
+      (ionChange)="setLimit($event.detail.value)">
+    </ion-range>
+    <p>
+      @if (maxPrice() < dearest) {
+        Up to {{ maxPrice() }} EUR / group
+      } @else {
+        No price limit
+      }
+    </p>
+  </div>
+
   @if (isLoading()) {
     <div class="ion-padding ion-text-center">
       <ion-spinner

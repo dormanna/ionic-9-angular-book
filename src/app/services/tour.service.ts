@@ -1,4 +1,4 @@
-import { Service, computed } from '@angular/core';
+import { Service, computed, signal } from '@angular/core';
 import { httpResource } from '@angular/common/http';
 import { Tour } from '../models/tour';
 
@@ -23,10 +23,29 @@ const toTour = (t: TourPayload): Tour => ({
   price: t.PriceG,
 });
 
+export interface Criteria {
+  maxPrice?: number;
+}
+
 @Service()
 export class TourService {
+  private readonly criteria = signal<Criteria>({});
+
+  private urlFor(criteria: Criteria) {
+    const params = new URLSearchParams();
+    if (criteria.maxPrice !== undefined) {
+      params.set('maxPrice', String(criteria.maxPrice));
+    }
+    const query = params.toString();
+    return query ? `/api/tours?${query}` : '/api/tours';
+  }
+
+  narrowTo(criteria: Criteria) {
+    this.criteria.set(criteria);
+  }
+
   private readonly resource = httpResource<TourPayload[]>(
-    () => '/api/tours',
+    () => this.urlFor(this.criteria()),
     { defaultValue: [] },
   );
 
