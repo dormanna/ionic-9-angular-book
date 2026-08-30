@@ -14,6 +14,10 @@
 </ion-header>
 
 <ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="refresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
   <div class="ion-padding-horizontal">
     <ion-range
       label="Group price"
@@ -34,7 +38,7 @@
     </p>
   </div>
 
-  @if (isLoading()) {
+  @if (firstLoad()) {
     <div class="ion-padding ion-text-center">
       <ion-spinner
         name="crescent"
@@ -49,6 +53,11 @@
         The tours could not be loaded.
       </p>
     </ion-text>
+    <div class="ion-padding-horizontal">
+      <ion-button fill="outline" (click)="retry()">
+        Try again
+      </ion-button>
+    </div>
   } @else {
     <ion-list>
       @for (tour of tours(); track tour.id) {

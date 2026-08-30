@@ -4,7 +4,9 @@ import { Router, RouterLink } from '@angular/router';
 import { IonHeader, IonToolbar, IonTitle, IonContent,
          IonButtons, IonMenuButton, IonList, IonItem,
          IonLabel, IonNote, IonRouterLink, IonBadge,
-         IonThumbnail, IonSpinner, IonText, IonRange }
+         IonThumbnail, IonSpinner, IonText, IonRange,
+         IonRefresher, IonRefresherContent, IonButton,
+         RefresherCustomEvent }
         from '@ionic/angular';
 import { TourService } from '../../services/tour.service';
 
@@ -17,14 +19,15 @@ const DEAREST = 400;
   imports: [RouterLink, IonRouterLink, IonHeader, IonToolbar,
             IonTitle, IonContent, IonButtons, IonMenuButton,
             IonList, IonItem, IonLabel, IonNote, IonBadge,
-            IonThumbnail, IonSpinner, IonText, IonRange],
+            IonThumbnail, IonSpinner, IonText, IonRange,
+            IonRefresher, IonRefresherContent, IonButton],
 })
 export class ToursPage {
   private readonly service = inject(TourService);
   private readonly router = inject(Router);
 
   readonly tours = this.service.all();
-  readonly isLoading = this.service.isLoading;
+  readonly firstLoad = this.service.firstLoad;
   readonly error = this.service.error;
 
   readonly cheapest = CHEAPEST;
@@ -35,13 +38,31 @@ export class ToursPage {
       numberAttribute(value, DEAREST),
   });
 
+  private finishPull: (() => void) | null = null;
+
   constructor() {
+    effect(() => {
+      if (!this.service.isLoading() && this.finishPull) {
+        this.finishPull();
+        this.finishPull = null;
+      }
+    });
+
     effect(() => {
       const limit = this.maxPrice();
       this.service.narrowTo(
         limit < DEAREST ? { maxPrice: limit } : {},
       );
     });
+  }
+
+  refresh(event: RefresherCustomEvent) {
+    this.finishPull = () => event.detail.complete();
+    this.service.reload();
+  }
+
+  retry() {
+    this.service.reload();
   }
 
   setLimit(value: number | { lower: number; upper: number }) {

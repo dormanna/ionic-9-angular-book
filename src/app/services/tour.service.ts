@@ -63,6 +63,13 @@ export class TourService {
     return this.tours().find((t) => t.id === id);
   }
 
+  reload() {
+    this.resource.reload();
+  }
+
   readonly isLoading = this.resource.isLoading;
+  readonly firstLoad = computed(
+    () => this.resource.status() === 'loading',
+  );
   readonly error = this.resource.error;
 }
