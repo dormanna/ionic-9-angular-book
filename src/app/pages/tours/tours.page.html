@@ -18,6 +18,14 @@
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
+  <ion-searchbar
+    aria-label="Search tours"
+    placeholder="Search tours"
+    debounce="300"
+    [value]="q()"
+    (ionInput)="setQuery($event.detail.value)">
+  </ion-searchbar>
+
   <div class="ion-padding-horizontal">
     <ion-range
       label="Group price"
@@ -38,7 +46,7 @@
     </p>
   </div>
 
-  @if (firstLoad()) {
+  @if (firstLoad() && tours().length === 0) {
     <div class="ion-padding ion-text-center">
       <ion-spinner
         name="crescent"

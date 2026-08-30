@@ -1,4 +1,5 @@
-import { Service, computed, signal } from '@angular/core';
+import { Service, computed, linkedSignal, signal }
+        from '@angular/core';
 import { httpResource } from '@angular/common/http';
 import { Tour } from '../models/tour';
 
@@ -25,6 +26,7 @@ const toTour = (t: TourPayload): Tour => ({
 
 export interface Criteria {
   maxPrice?: number;
+  q?: string;
 }
 
 @Service()
@@ -35,6 +37,9 @@ export class TourService {
     const params = new URLSearchParams();
     if (criteria.maxPrice !== undefined) {
       params.set('maxPrice', String(criteria.maxPrice));
+    }
+    if (criteria.q) {
+      params.set('q', criteria.q);
     }
     const query = params.toString();
     return query ? `/api/tours?${query}` : '/api/tours';
@@ -49,11 +54,16 @@ export class TourService {
     { defaultValue: [] },
   );
 
-  private readonly tours = computed(() =>
-    this.resource.hasValue()
-      ? this.resource.value().map(toTour)
-      : [],
-  );
+  private readonly tours = linkedSignal<Tour[], Tour[]>({
+    source: () =>
+      this.resource.hasValue()
+        ? this.resource.value().map(toTour)
+        : [],
+    computation: (tours, previous) =>
+      this.resource.isLoading() && previous
+        ? previous.value
+        : tours,
+  });
 
   all() {
     return this.tours;

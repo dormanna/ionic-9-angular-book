@@ -6,6 +6,7 @@ import { IonHeader, IonToolbar, IonTitle, IonContent,
          IonLabel, IonNote, IonRouterLink, IonBadge,
          IonThumbnail, IonSpinner, IonText, IonRange,
          IonRefresher, IonRefresherContent, IonButton,
+         IonSearchbar,
          RefresherCustomEvent }
         from '@ionic/angular';
 import { TourService } from '../../services/tour.service';
@@ -20,7 +21,8 @@ const DEAREST = 400;
             IonTitle, IonContent, IonButtons, IonMenuButton,
             IonList, IonItem, IonLabel, IonNote, IonBadge,
             IonThumbnail, IonSpinner, IonText, IonRange,
-            IonRefresher, IonRefresherContent, IonButton],
+            IonRefresher, IonRefresherContent, IonButton,
+            IonSearchbar],
 })
 export class ToursPage {
   private readonly service = inject(TourService);
@@ -38,6 +40,8 @@ export class ToursPage {
       numberAttribute(value, DEAREST),
   });
 
+  readonly q = input('');
+
   private finishPull: (() => void) | null = null;
 
   constructor() {
@@ -50,15 +54,24 @@ export class ToursPage {
 
     effect(() => {
       const limit = this.maxPrice();
-      this.service.narrowTo(
-        limit < DEAREST ? { maxPrice: limit } : {},
-      );
+      this.service.narrowTo({
+        maxPrice: limit < DEAREST ? limit : undefined,
+        q: this.q() || undefined,
+      });
     });
   }
 
   refresh(event: RefresherCustomEvent) {
     this.finishPull = () => event.detail.complete();
     this.service.reload();
+  }
+
+  setQuery(value: string | null | undefined) {
+    this.router.navigate([], {
+      queryParams: { q: value || null },
+      queryParamsHandling: 'merge',
+      replaceUrl: true,
+    });
   }
 
   retry() {
