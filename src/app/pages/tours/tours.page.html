@@ -6,8 +6,8 @@
     <ion-title>
       Tours
       <ion-badge role="img"
-                 [attr.aria-label]="tours().length + ' tours'">
-        {{ tours().length }}
+                 [attr.aria-label]="shown().length + ' tours'">
+        {{ shown().length }}
       </ion-badge>
     </ion-title>
   </ion-toolbar>
@@ -18,33 +18,46 @@
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
-  <ion-searchbar
-    aria-label="Search tours"
-    placeholder="Search tours"
-    debounce="300"
-    [value]="q()"
-    (ionInput)="setQuery($event.detail.value)">
-  </ion-searchbar>
+  <ion-segment
+    [value]="view()"
+    (ionChange)="setView($event.detail.value)">
+    <ion-segment-button value="all">
+      <ion-label>All</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="favorites">
+      <ion-label>Favorites</ion-label>
+    </ion-segment-button>
+  </ion-segment>
 
-  <div class="ion-padding-horizontal">
-    <ion-range
-      label="Group price"
-      aria-label="Group price in EUR per group"
-      [min]="cheapest"
-      [max]="dearest"
-      step="20"
-      pin="true"
-      [value]="maxPrice()"
-      (ionChange)="setLimit($event.detail.value)">
-    </ion-range>
-    <p>
-      @if (maxPrice() < dearest) {
-        Up to {{ maxPrice() }} EUR / group
-      } @else {
-        No price limit
-      }
-    </p>
-  </div>
+  @if (view() === 'all') {
+    <ion-searchbar
+      aria-label="Search tours"
+      placeholder="Search tours"
+      debounce="300"
+      [value]="q()"
+      (ionInput)="setQuery($event.detail.value)">
+    </ion-searchbar>
+
+    <div class="ion-padding-horizontal">
+      <ion-range
+        label="Group price"
+        aria-label="Group price in EUR per group"
+        [min]="cheapest"
+        [max]="dearest"
+        step="20"
+        pin="true"
+        [value]="maxPrice()"
+        (ionChange)="setLimit($event.detail.value)">
+      </ion-range>
+      <p>
+        @if (maxPrice() < dearest) {
+          Up to {{ maxPrice() }} EUR / group
+        } @else {
+          No price limit
+        }
+      </p>
+    </div>
+  }
 
   @if (firstLoad() && tours().length === 0) {
     <div class="ion-padding ion-text-center">
@@ -68,7 +81,7 @@
     </div>
   } @else {
     <ion-list>
-      @for (tour of tours(); track tour.id) {
+      @for (tour of shown(); track tour.id) {
         <ion-item detail="true" [routerLink]="['/tours', tour.id]">
           <ion-thumbnail slot="start">
             <img

@@ -1,15 +1,17 @@
-import { Component, effect, inject, input,
-         numberAttribute } from '@angular/core';
+import { Component, computed, effect, inject, input,
+         numberAttribute, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { IonHeader, IonToolbar, IonTitle, IonContent,
          IonButtons, IonMenuButton, IonList, IonItem,
          IonLabel, IonNote, IonRouterLink, IonBadge,
          IonThumbnail, IonSpinner, IonText, IonRange,
          IonRefresher, IonRefresherContent, IonButton,
-         IonSearchbar,
+         IonSearchbar, IonSegment, IonSegmentButton,
          RefresherCustomEvent }
         from '@ionic/angular';
 import { TourService } from '../../services/tour.service';
+import { FavoritesService }
+        from '../../services/favorites.service';
 
 const CHEAPEST = 80;
 const DEAREST = 400;
@@ -22,13 +24,25 @@ const DEAREST = 400;
             IonList, IonItem, IonLabel, IonNote, IonBadge,
             IonThumbnail, IonSpinner, IonText, IonRange,
             IonRefresher, IonRefresherContent, IonButton,
-            IonSearchbar],
+            IonSearchbar, IonSegment, IonSegmentButton],
 })
 export class ToursPage {
   private readonly service = inject(TourService);
+  private readonly favorites = inject(FavoritesService);
   private readonly router = inject(Router);
 
   readonly tours = this.service.all();
+  readonly view = signal<'all' | 'favorites'>('all');
+
+  readonly shown = computed(() => {
+    const tours = this.tours();
+    if (this.view() === 'all') {
+      return tours;
+    }
+    const ids = this.favorites.all();
+    return tours.filter((tour) => ids.includes(tour.id));
+  });
+
   readonly firstLoad = this.service.firstLoad;
   readonly error = this.service.error;
 
@@ -64,6 +78,23 @@ export class ToursPage {
   refresh(event: RefresherCustomEvent) {
     this.finishPull = () => event.detail.complete();
     this.service.reload();
+  }
+
+  setView(value: string | number | undefined) {
+    const view =
+      value === 'favorites' ? 'favorites' : 'all';
+    this.view.set(view);
+    if (view === 'favorites') {
+      this.clearFilters();
+    }
+  }
+
+  private clearFilters() {
+    this.router.navigate([], {
+      queryParams: { q: null, maxPrice: null },
+      queryParamsHandling: 'merge',
+      replaceUrl: true,
+    });
   }
 
   setQuery(value: string | null | undefined) {
