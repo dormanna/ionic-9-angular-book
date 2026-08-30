@@ -7,4 +7,5 @@ export interface Tour {
   duration: number;
   maxPersons: number;
   price: number;
+  priceForeign: number;
 }

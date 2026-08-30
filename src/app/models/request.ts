@@ -5,5 +5,5 @@ export interface TourRequest {
   lastName: string;
   email: string;
   message: string;
-  language: 'de' | 'en';
+  language: 'de' | 'en' | 'fr' | 'es';
 }

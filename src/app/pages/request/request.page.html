@@ -36,7 +36,7 @@
         </ion-item>
         <div slot="content" class="ion-padding">
           {{ tour.duration }} min,
-          {{ tour.price }} EUR / group
+          from {{ tour.price }} EUR / group
         </div>
       </ion-accordion>
     </ion-accordion-group>
@@ -94,19 +94,22 @@
     </ng-template>
   </ion-modal>
 
-  <h2 id="language">Which language?</h2>
+  <h2>Which language?</h2>
 
-  <ion-radio-group
-    aria-labelledby="language"
+  <ion-select
+    label="Guide language"
+    label-placement="stacked"
+    interface="popover"
     [value]="request().language"
     (ionChange)="patch({ language: $event.detail.value })">
-    <ion-radio value="de" labelPlacement="end" justify="start">
-      German
-    </ion-radio>
-    <ion-radio value="en" labelPlacement="end" justify="start">
-      English
-    </ion-radio>
-  </ion-radio-group>
+    @for (language of languages; track language.code) {
+      <ion-select-option [value]="language.code">
+        {{ language.name }}
+      </ion-select-option>
+    }
+  </ion-select>
+
+  <p>{{ price() }} EUR / group</p>
 
   <h2>Who is asking?</h2>
 

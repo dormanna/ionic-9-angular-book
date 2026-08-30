@@ -3,6 +3,16 @@ import { Service, computed, linkedSignal, signal }
 import { httpResource } from '@angular/common/http';
 import { Tour } from '../models/tour';
 
+interface LookupPayload {
+  ID: string;
+  Name: string;
+}
+
+const toLookup = (l: LookupPayload) => ({
+  id: l.ID,
+  name: l.Name,
+});
+
 interface TourPayload {
   ID: number;
   Title: string;
@@ -11,6 +21,7 @@ interface TourPayload {
   Duration: number;
   MaxPersons: number;
   PriceG: number;
+  PriceF: number;
 }
 
 const toTour = (t: TourPayload): Tour => ({
@@ -22,11 +33,14 @@ const toTour = (t: TourPayload): Tour => ({
   duration: t.Duration,
   maxPersons: t.MaxPersons,
   price: t.PriceG,
+  priceForeign: t.PriceF,
 });
 
 export interface Criteria {
   maxPrice?: number;
   q?: string;
+  region?: string;
+  tourType?: string;
 }
 
 @Service()
@@ -41,6 +55,12 @@ export class TourService {
     if (criteria.q) {
       params.set('q', criteria.q);
     }
+    if (criteria.region) {
+      params.set('region', criteria.region);
+    }
+    if (criteria.tourType) {
+      params.set('tourType', criteria.tourType);
+    }
     const query = params.toString();
     return query ? `/api/tours?${query}` : '/api/tours';
   }
@@ -52,6 +72,28 @@ export class TourService {
   private readonly resource = httpResource<TourPayload[]>(
     () => this.urlFor(this.criteria()),
     { defaultValue: [] },
+  );
+
+  private readonly regionResource =
+    httpResource<LookupPayload[]>(() => '/api/regions', {
+      defaultValue: [],
+    });
+
+  private readonly typeResource =
+    httpResource<LookupPayload[]>(() => '/api/tourtypes', {
+      defaultValue: [],
+    });
+
+  readonly regions = computed(() =>
+    this.regionResource.hasValue()
+      ? this.regionResource.value().map(toLookup)
+      : [],
+  );
+
+  readonly tourTypes = computed(() =>
+    this.typeResource.hasValue()
+      ? this.typeResource.value().map(toLookup)
+      : [],
   );
 
   private readonly tours = linkedSignal<Tour[], Tour[]>({

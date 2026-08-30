@@ -39,6 +39,36 @@
     </ion-searchbar>
 
     <div class="ion-padding-horizontal">
+      <ion-select
+        label="Region"
+        placeholder="Anywhere"
+        interface="popover"
+        [value]="region()"
+        (ionChange)="setRegion($event.detail.value)">
+        <ion-select-option value="">Anywhere</ion-select-option>
+        @for (region of regions(); track region.id) {
+          <ion-select-option [value]="region.id">
+            {{ region.name }}
+          </ion-select-option>
+        }
+      </ion-select>
+
+      <ion-select
+        label="Tour type"
+        placeholder="Any kind"
+        interface="popover"
+        [value]="tourType()"
+        (ionChange)="setTourType($event.detail.value)">
+        <ion-select-option value="">Any kind</ion-select-option>
+        @for (type of tourTypes(); track type.id) {
+          <ion-select-option [value]="type.id">
+            {{ type.name }}
+          </ion-select-option>
+        }
+      </ion-select>
+    </div>
+
+    <div class="ion-padding-horizontal">
       <ion-range
         label="Group price"
         aria-label="Group price in EUR per group"
@@ -92,7 +122,7 @@
           </ion-thumbnail>
           <ion-label>
             <h2>{{ tour.title }}</h2>
-            <p>{{ tour.price }} EUR / group</p>
+            <p>from {{ tour.price }} EUR / group</p>
           </ion-label>
           <ion-note slot="end">{{ tour.duration }} min</ion-note>
         </ion-item>

@@ -8,7 +8,7 @@ import { IonHeader, IonToolbar, IonTitle, IonContent,
          IonDatetimeButton, IonModal,
          IonPicker, IonPickerColumn, IonPickerColumnOption,
          IonInput, IonTextarea, IonButton, IonRouterLink,
-         IonRadioGroup, IonRadio }
+         IonSelect, IonSelectOption }
         from '@ionic/angular';
 import { TourService } from '../../services/tour.service';
 import { TourRequest } from '../../models/request';
@@ -32,7 +32,7 @@ const inDays = (days: number) => {
             IonModal, IonPicker,
             IonPickerColumn, IonPickerColumnOption,
             IonButton, IonInput, IonTextarea,
-            IonRadioGroup, IonRadio],
+            IonSelect, IonSelectOption],
 })
 export class RequestPage {
   private readonly tours = inject(TourService);
@@ -51,6 +51,23 @@ export class RequestPage {
     email: '',
     message: '',
     language: 'de',
+  });
+
+  readonly languages = [
+    { code: 'de', name: 'German' },
+    { code: 'en', name: 'English' },
+    { code: 'fr', name: 'French' },
+    { code: 'es', name: 'Spanish' },
+  ];
+
+  readonly price = computed(() => {
+    const tour = this.tour();
+    if (!tour) {
+      return 0;
+    }
+    return this.request().language === 'de'
+      ? tour.price
+      : tour.priceForeign;
   });
 
   readonly groupSizes = computed(() =>
