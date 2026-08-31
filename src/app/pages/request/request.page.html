@@ -94,6 +94,25 @@
     </ng-template>
   </ion-modal>
 
+  <ion-toggle
+    class="ion-margin-vertical"
+    justify="space-between"
+    [checked]="request().bus"
+    (ionChange)="patch({ bus: $event.detail.checked })">
+    Arrange bus transfer
+  </ion-toggle>
+
+  @if (request().bus) {
+    <ion-input
+      class="ion-margin-bottom"
+      fill="outline"
+      label="Pick-up and return address"
+      label-placement="stacked"
+      [value]="request().pickUp"
+      (ionInput)="patch({ pickUp: $event.detail.value ?? '' })">
+    </ion-input>
+  }
+
   <h2>Which language?</h2>
 
   <ion-select

@@ -6,4 +6,6 @@ export interface TourRequest {
   email: string;
   message: string;
   language: 'de' | 'en' | 'fr' | 'es';
+  bus: boolean;
+  pickUp: string;
 }
