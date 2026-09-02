@@ -7,6 +7,46 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
-  <p>Home page.</p>
+<ion-content>
+  <img
+    class="hero"
+    src="/api/img/big/bonn-rhein-schiff.jpg"
+    alt="The Rhine at Bonn under a summer sky">
+
+  <div class="ion-padding">
+    <h1>Best of Bonn Tours</h1>
+
+    <p>
+      Discover Bonn, the Rhine and the Seven Mountains
+      with experienced local guides.
+    </p>
+
+    <h2 id="region">Which region would you like to explore?</h2>
+
+    <ion-radio-group
+      aria-labelledby="region"
+      [value]="region()"
+      (ionChange)="region.set($event.detail.value)">
+      @for (region of regions(); track region.id) {
+        <ion-radio
+          [value]="region.id"
+          labelPlacement="end"
+          justify="start">
+          {{ region.name }}
+        </ion-radio>
+      }
+    </ion-radio-group>
+
+    <ion-button
+      class="ion-margin-top"
+      expand="block"
+      (click)="showRegion()">
+      Show tours
+    </ion-button>
+
+    <ion-button expand="block" fill="outline"
+                routerLink="/tours">
+      Browse all tours
+    </ion-button>
+  </div>
 </ion-content>
