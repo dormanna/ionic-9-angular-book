@@ -10,6 +10,24 @@
         {{ shown().length }}
       </ion-badge>
     </ion-title>
+    @if (filtered()) {
+      <ion-buttons slot="primary">
+        <ion-button (click)="clearFilters()">
+          Clear filters
+        </ion-button>
+      </ion-buttons>
+    }
+  </ion-toolbar>
+
+  <ion-toolbar>
+    <ion-searchbar
+      aria-label="Search all tours"
+      placeholder="Search all tours"
+      debounce="300"
+      [disabled]="view() === 'favorites'"
+      [value]="q()"
+      (ionInput)="setQuery($event.detail.value)">
+    </ion-searchbar>
   </ion-toolbar>
 </ion-header>
 
@@ -30,14 +48,6 @@
   </ion-segment>
 
   @if (view() === 'all') {
-    <ion-searchbar
-      aria-label="Search tours"
-      placeholder="Search tours"
-      debounce="300"
-      [value]="q()"
-      (ionInput)="setQuery($event.detail.value)">
-    </ion-searchbar>
-
     <div class="ion-padding-horizontal">
       <ion-select
         label="Region"

@@ -64,6 +64,12 @@ export class ToursPage {
   readonly regions = this.service.regions;
   readonly tourTypes = this.service.tourTypes;
 
+  readonly filtered = computed(
+    () =>
+      Boolean(this.q() || this.region() || this.tourType()) ||
+      this.maxPrice() < DEAREST,
+  );
+
   private finishPull: (() => void) | null = null;
 
   constructor() {
@@ -99,15 +105,6 @@ export class ToursPage {
     }
   }
 
-  private clearFilters() {
-    this.narrow({
-      q: null,
-      region: null,
-      tourType: null,
-      maxPrice: null,
-    });
-  }
-
   setRegion(value: string) {
     this.narrow({ region: value || null });
   }
@@ -125,6 +122,15 @@ export class ToursPage {
       queryParams,
       queryParamsHandling: 'merge',
       replaceUrl: true,
+    });
+  }
+
+  clearFilters() {
+    this.narrow({
+      q: null,
+      region: null,
+      tourType: null,
+      maxPrice: null,
     });
   }
 
