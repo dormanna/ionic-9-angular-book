@@ -12,7 +12,7 @@ import { IonHeader, IonToolbar, IonTitle, IonContent,
          IonInput, IonTextarea, IonButton, IonRouterLink,
          IonText,
          IonSelect, IonSelectOption, IonToggle,
-         ToastController }
+         ToastController, NavController }
         from '@ionic/angular';
 import { TourService } from '../../services/tour.service';
 import { RequestService }
@@ -45,6 +45,7 @@ export class RequestPage {
   private readonly tours = inject(TourService);
   private readonly requests = inject(RequestService);
   private readonly toasts = inject(ToastController);
+  private readonly nav = inject(NavController);
 
   readonly id = input.required<string>();
   readonly tour = computed(() => this.tours.byId(this.id()));
@@ -117,6 +118,8 @@ export class RequestPage {
       try {
         await this.requests.send(this.payload());
         await this.confirm();
+        this.requestForm().reset();
+        await this.nav.navigateBack(['/tours', this.id()]);
       } catch {
         this.failed.set(true);
       } finally {
