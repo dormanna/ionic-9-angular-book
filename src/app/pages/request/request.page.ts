@@ -1,5 +1,6 @@
 import { Component, computed, inject, input, signal }
         from '@angular/core';
+import { form, FormField } from '@angular/forms/signals';
 import { RouterLink } from '@angular/router';
 import { IonHeader, IonToolbar, IonTitle, IonContent,
          IonButtons, IonBackButton, IonAccordion,
@@ -24,7 +25,8 @@ const inDays = (days: number) => {
 @Component({
   selector: 'app-request',
   templateUrl: './request.page.html',
-  imports: [RouterLink, IonRouterLink, IonHeader,
+  imports: [FormField, RouterLink, IonRouterLink,
+            IonHeader,
             IonToolbar, IonTitle, IonContent, IonButtons,
             IonBackButton, IonAccordion, IonAccordionGroup,
             IonItem, IonLabel, IonBreadcrumbs,
@@ -55,6 +57,8 @@ export class RequestPage {
     pickUp: '',
   });
 
+  readonly requestForm = form(this.request);
+
   readonly languages = [
     { code: 'de', name: 'German' },
     { code: 'en', name: 'English' },
@@ -81,12 +85,6 @@ export class RequestPage {
 
   patch(part: Partial<TourRequest>) {
     this.request.update((r) => ({ ...r, ...part }));
-  }
-
-  setDate(value: string | string[] | null | undefined) {
-    this.patch({
-      date: typeof value === 'string' ? value : null,
-    });
   }
 
   setPeople(value: string | number | undefined) {

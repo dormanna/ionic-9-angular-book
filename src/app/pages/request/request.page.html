@@ -57,8 +57,7 @@
         minuteValues="0,30"
         [min]="earliest"
         [max]="latest"
-        [value]="request().date"
-        (ionChange)="setDate($event.detail.value)">
+        [formField]="requestForm.date">
       </ion-datetime>
     </ng-template>
   </ion-modal>
@@ -97,8 +96,7 @@
   <ion-toggle
     class="ion-margin-vertical"
     justify="space-between"
-    [checked]="request().bus"
-    (ionChange)="patch({ bus: $event.detail.checked })">
+    [formField]="requestForm.bus">
     Arrange bus transfer
   </ion-toggle>
 
@@ -108,8 +106,7 @@
       fill="outline"
       label="Pick-up and return address"
       label-placement="stacked"
-      [value]="request().pickUp"
-      (ionInput)="patch({ pickUp: $event.detail.value ?? '' })">
+      [formField]="requestForm.pickUp">
     </ion-input>
   }
 
@@ -119,8 +116,7 @@
     label="Guide language"
     label-placement="stacked"
     interface="popover"
-    [value]="request().language"
-    (ionChange)="patch({ language: $event.detail.value })">
+    [formField]="requestForm.language">
     @for (language of languages; track language.code) {
       <ion-select-option [value]="language.code">
         {{ language.name }}
@@ -138,8 +134,7 @@
     label="First name"
     label-placement="stacked"
     autocomplete="given-name"
-    [value]="request().firstName"
-    (ionInput)="patch({ firstName: $event.detail.value ?? '' })">
+    [formField]="requestForm.firstName">
   </ion-input>
 
   <ion-input
@@ -148,8 +143,7 @@
     label="Last name"
     label-placement="stacked"
     autocomplete="family-name"
-    [value]="request().lastName"
-    (ionInput)="patch({ lastName: $event.detail.value ?? '' })">
+    [formField]="requestForm.lastName">
   </ion-input>
 
   <ion-input
@@ -159,8 +153,7 @@
     label="Email"
     label-placement="stacked"
     autocomplete="email"
-    [value]="request().email"
-    (ionInput)="patch({ email: $event.detail.value ?? '' })">
+    [formField]="requestForm.email">
   </ion-input>
 
   <ion-textarea
@@ -170,8 +163,7 @@
     label-placement="stacked"
     helper-text="Optional — add any special requests."
     auto-grow="true"
-    [value]="request().message"
-    (ionInput)="patch({ message: $event.detail.value ?? '' })">
+    [formField]="requestForm.message">
   </ion-textarea>
 
   <p>We answer within one working day.</p>
