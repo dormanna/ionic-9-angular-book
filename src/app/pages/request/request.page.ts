@@ -8,12 +8,12 @@ import { IonHeader, IonToolbar, IonTitle, IonContent,
          IonAccordionGroup, IonItem, IonLabel,
          IonBreadcrumbs, IonBreadcrumb, IonDatetime,
          IonDatetimeButton, IonModal,
-         IonPicker, IonPickerColumn, IonPickerColumnOption,
          IonInput, IonTextarea, IonButton, IonRouterLink,
          IonSelect, IonSelectOption, IonToggle }
         from '@ionic/angular';
 import { TourService } from '../../services/tour.service';
 import { TourRequest } from '../../models/request';
+import { GroupSizeComponent } from './group-size.component';
 
 const inDays = (days: number) => {
   const d = new Date();
@@ -32,8 +32,7 @@ const inDays = (days: number) => {
             IonBackButton, IonAccordion, IonAccordionGroup,
             IonItem, IonLabel, IonBreadcrumbs,
             IonBreadcrumb, IonDatetime, IonDatetimeButton,
-            IonModal, IonPicker,
-            IonPickerColumn, IonPickerColumnOption,
+            IonModal, GroupSizeComponent,
             IonButton, IonInput, IonTextarea,
             IonSelect, IonSelectOption, IonToggle],
 })
@@ -89,13 +88,4 @@ export class RequestPage {
     ),
   );
 
-  patch(part: Partial<TourRequest>) {
-    this.request.update((r) => ({ ...r, ...part }));
-  }
-
-  setPeople(value: string | number | undefined) {
-    if (typeof value === 'number') {
-      this.patch({ people: value });
-    }
-  }
 }

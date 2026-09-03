@@ -77,18 +77,9 @@
     initialBreakpoint="0.3">
     <ng-template>
       <ion-content>
-        <ion-picker>
-          <ion-picker-column
-            aria-label="Number of people"
-            [value]="request().people"
-            (ionChange)="setPeople($event.detail.value)">
-            @for (size of groupSizes(); track size) {
-              <ion-picker-column-option [value]="size">
-                {{ size }}
-              </ion-picker-column-option>
-            }
-          </ion-picker-column>
-        </ion-picker>
+        <app-group-size
+          [formField]="requestForm.people"
+          [sizes]="groupSizes()"></app-group-size>
       </ion-content>
     </ng-template>
   </ion-modal>
