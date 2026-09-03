@@ -1,6 +1,7 @@
 import { Component, computed, inject, input, signal }
         from '@angular/core';
-import { form, FormField } from '@angular/forms/signals';
+import { email, form, FormField, required }
+        from '@angular/forms/signals';
 import { RouterLink } from '@angular/router';
 import { IonHeader, IonToolbar, IonTitle, IonContent,
          IonButtons, IonBackButton, IonAccordion,
@@ -46,7 +47,7 @@ export class RequestPage {
   readonly latest = inDays(365);
 
   readonly request = signal<TourRequest>({
-    date: null,
+    date: `${this.earliest}T09:30:00`,
     people: 1,
     firstName: '',
     lastName: '',
@@ -57,7 +58,12 @@ export class RequestPage {
     pickUp: '',
   });
 
-  readonly requestForm = form(this.request);
+  readonly requestForm = form(this.request, (p) => {
+    required(p.firstName);
+    required(p.lastName);
+    required(p.email);
+    email(p.email);
+  });
 
   readonly languages = [
     { code: 'de', name: 'German' },

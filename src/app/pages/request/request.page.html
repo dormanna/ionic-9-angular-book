@@ -134,6 +134,7 @@
     label="First name"
     label-placement="stacked"
     autocomplete="given-name"
+    errorText="Please tell us your first name."
     [formField]="requestForm.firstName">
   </ion-input>
 
@@ -143,6 +144,7 @@
     label="Last name"
     label-placement="stacked"
     autocomplete="family-name"
+    errorText="And your last name."
     [formField]="requestForm.lastName">
   </ion-input>
 
@@ -153,6 +155,7 @@
     label="Email"
     label-placement="stacked"
     autocomplete="email"
+    errorText="Enter an address we can answer to."
     [formField]="requestForm.email">
   </ion-input>
 
