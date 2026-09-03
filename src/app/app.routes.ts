@@ -1,4 +1,6 @@
 import { Routes } from '@angular/router';
+import { unsavedChanges }
+        from './pages/request/unsaved-changes.guard';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -15,7 +17,8 @@ export const routes: Routes = [
   { path: 'tours/:id/request',
     loadComponent: () =>
       import('./pages/request/request.page')
-        .then((m) => m.RequestPage) },
+        .then((m) => m.RequestPage),
+    canDeactivate: [unsavedChanges] },
   { path: 'about',
     loadComponent: () =>
       import('./pages/about/about.page')
