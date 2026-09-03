@@ -161,5 +161,19 @@
     [formField]="requestForm.message">
   </ion-textarea>
 
+  <ion-button
+    class="ion-margin-vertical"
+    expand="block"
+    [disabled]="sending()"
+    (click)="send()">
+    {{ sending() ? 'Sending…' : 'Send request' }}
+  </ion-button>
+
+  @if (failed()) {
+    <ion-text color="danger">
+      <p>The request could not be sent. Try again.</p>
+    </ion-text>
+  }
+
   <p>We answer within one working day.</p>
 </ion-content>

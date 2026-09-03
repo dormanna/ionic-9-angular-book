@@ -1,6 +1,7 @@
 import { Component, computed, inject, input, signal }
         from '@angular/core';
-import { applyWhen, email, form, FormField, required }
+import { applyWhen, email, form, FormField, required,
+         submit }
         from '@angular/forms/signals';
 import { RouterLink } from '@angular/router';
 import { IonHeader, IonToolbar, IonTitle, IonContent,
@@ -9,9 +10,12 @@ import { IonHeader, IonToolbar, IonTitle, IonContent,
          IonBreadcrumbs, IonBreadcrumb, IonDatetime,
          IonDatetimeButton, IonModal,
          IonInput, IonTextarea, IonButton, IonRouterLink,
+         IonText,
          IonSelect, IonSelectOption, IonToggle }
         from '@ionic/angular';
 import { TourService } from '../../services/tour.service';
+import { RequestService }
+        from '../../services/request.service';
 import { TourRequest } from '../../models/request';
 import { GroupSizeComponent } from './group-size.component';
 
@@ -33,11 +37,12 @@ const inDays = (days: number) => {
             IonItem, IonLabel, IonBreadcrumbs,
             IonBreadcrumb, IonDatetime, IonDatetimeButton,
             IonModal, GroupSizeComponent,
-            IonButton, IonInput, IonTextarea,
+            IonButton, IonInput, IonTextarea, IonText,
             IonSelect, IonSelectOption, IonToggle],
 })
 export class RequestPage {
   private readonly tours = inject(TourService);
+  private readonly requests = inject(RequestService);
 
   readonly id = input.required<string>();
   readonly tour = computed(() => this.tours.byId(this.id()));
@@ -83,6 +88,31 @@ export class RequestPage {
       ? tour.price
       : tour.priceForeign;
   });
+
+  readonly sending = signal(false);
+  readonly failed = signal(false);
+
+  private payload(): TourRequest {
+    const request = this.request();
+    return request.bus
+      ? request
+      : { ...request, pickUp: '' };
+  }
+
+  async send() {
+    this.failed.set(false);
+    await submit(this.requestForm, async () => {
+      this.sending.set(true);
+      try {
+        await this.requests.send(this.payload());
+      } catch {
+        this.failed.set(true);
+      } finally {
+        this.sending.set(false);
+      }
+      return undefined;
+    });
+  }
 
   readonly groupSizes = computed(() =>
     Array.from(
