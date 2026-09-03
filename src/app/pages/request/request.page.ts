@@ -11,7 +11,8 @@ import { IonHeader, IonToolbar, IonTitle, IonContent,
          IonDatetimeButton, IonModal,
          IonInput, IonTextarea, IonButton, IonRouterLink,
          IonText,
-         IonSelect, IonSelectOption, IonToggle }
+         IonSelect, IonSelectOption, IonToggle,
+         ToastController }
         from '@ionic/angular';
 import { TourService } from '../../services/tour.service';
 import { RequestService }
@@ -43,6 +44,7 @@ const inDays = (days: number) => {
 export class RequestPage {
   private readonly tours = inject(TourService);
   private readonly requests = inject(RequestService);
+  private readonly toasts = inject(ToastController);
 
   readonly id = input.required<string>();
   readonly tour = computed(() => this.tours.byId(this.id()));
@@ -99,12 +101,22 @@ export class RequestPage {
       : { ...request, pickUp: '' };
   }
 
+  private async confirm() {
+    const toast = await this.toasts.create({
+      message: 'Request sent. We answer within one '
+        + 'working day.',
+      duration: 4000,
+    });
+    await toast.present();
+  }
+
   async send() {
     this.failed.set(false);
     await submit(this.requestForm, async () => {
       this.sending.set(true);
       try {
         await this.requests.send(this.payload());
+        await this.confirm();
       } catch {
         this.failed.set(true);
       } finally {
