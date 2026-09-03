@@ -1,6 +1,6 @@
 import { Component, computed, inject, input, signal }
         from '@angular/core';
-import { email, form, FormField, required }
+import { applyWhen, email, form, FormField, required }
         from '@angular/forms/signals';
 import { RouterLink } from '@angular/router';
 import { IonHeader, IonToolbar, IonTitle, IonContent,
@@ -62,6 +62,9 @@ export class RequestPage {
     required(p.lastName);
     required(p.email);
     email(p.email);
+    applyWhen(p, (ctx) => ctx.value().bus, (q) => {
+      required(q.pickUp);
+    });
   });
 
   readonly languages = [
