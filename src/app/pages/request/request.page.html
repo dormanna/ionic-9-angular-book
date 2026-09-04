@@ -42,9 +42,47 @@
     </ion-accordion-group>
   }
 
-  <h2>When would you like to go?</h2>
+  <h2>Tour details</h2>
 
-  <ion-datetime-button datetime="when"></ion-datetime-button>
+  <ion-list class="ion-margin-bottom">
+    <ion-item>
+      <ion-label>Date</ion-label>
+      <ion-datetime-button slot="end" datetime="when">
+      </ion-datetime-button>
+    </ion-item>
+
+    <ion-item button id="people" [detail]="true">
+      <ion-label>Travelers</ion-label>
+      <ion-note slot="end">
+        {{ request().people }}
+        {{ request().people === 1 ? 'person' : 'people' }}
+      </ion-note>
+    </ion-item>
+
+    <ion-item>
+      <ion-select
+        interface="popover"
+        [formField]="requestForm.language">
+        <div slot="label">
+          Language
+          <span class="language-price">
+            · {{ price() }} EUR / group
+          </span>
+        </div>
+        @for (language of languages; track language.code) {
+          <ion-select-option [value]="language.code">
+            {{ language.name }}
+          </ion-select-option>
+        }
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-toggle [formField]="requestForm.bus">
+        Bus transfer
+      </ion-toggle>
+    </ion-item>
+  </ion-list>
 
   <ion-modal
     [keepContentsMounted]="true"
@@ -62,13 +100,6 @@
     </ng-template>
   </ion-modal>
 
-  <h2>How many people?</h2>
-
-  <ion-button id="people" fill="solid" color="light">
-    {{ request().people }}
-    {{ request().people === 1 ? 'person' : 'people' }}
-  </ion-button>
-
   <ion-modal
     trigger="people"
     aria-label="Number of people"
@@ -84,44 +115,23 @@
     </ng-template>
   </ion-modal>
 
-  <ion-toggle
-    class="ion-margin-vertical"
-    justify="space-between"
-    [formField]="requestForm.bus">
-    Arrange bus transfer
-  </ion-toggle>
-
   @if (request().bus) {
     <ion-input
       class="ion-margin-bottom"
+      mode="md"
       fill="outline"
-      label="Pick-up and return address"
+      label="Pickup address"
       label-placement="stacked"
       errorText="Where should the bus pick you up?"
       [formField]="requestForm.pickUp">
     </ion-input>
   }
 
-  <h2>Which language?</h2>
-
-  <ion-select
-    label="Guide language"
-    label-placement="stacked"
-    interface="popover"
-    [formField]="requestForm.language">
-    @for (language of languages; track language.code) {
-      <ion-select-option [value]="language.code">
-        {{ language.name }}
-      </ion-select-option>
-    }
-  </ion-select>
-
-  <p>{{ price() }} EUR / group</p>
-
-  <h2>Who is asking?</h2>
+  <h2>Your details</h2>
 
   <ion-input
     class="ion-margin-bottom"
+    mode="md"
     fill="outline"
     label="First name"
     label-placement="stacked"
@@ -132,6 +142,7 @@
 
   <ion-input
     class="ion-margin-bottom"
+    mode="md"
     fill="outline"
     label="Last name"
     label-placement="stacked"
@@ -142,6 +153,7 @@
 
   <ion-input
     class="ion-margin-bottom"
+    mode="md"
     fill="outline"
     type="email"
     label="Email"
@@ -153,8 +165,9 @@
 
   <ion-textarea
     class="ion-margin-bottom"
+    mode="md"
     fill="outline"
-    label="Anything we should know?"
+    label="Message"
     label-placement="stacked"
     helper-text="Optional — add any special requests."
     auto-grow="true"
