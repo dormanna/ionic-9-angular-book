@@ -29,6 +29,7 @@
       (ionChange)="region.set($event.detail.value)">
       @for (region of regions(); track region.id) {
         <ion-radio
+          class="ion-padding-vertical"
           [value]="region.id"
           labelPlacement="end"
           justify="start">
@@ -44,8 +45,11 @@
       Show tours
     </ion-button>
 
-    <ion-button expand="block" fill="outline"
-                routerLink="/tours">
+    <ion-button
+      class="ion-margin-top"
+      expand="block"
+      fill="outline"
+      routerLink="/tours">
       Browse all tours
     </ion-button>
   </div>
