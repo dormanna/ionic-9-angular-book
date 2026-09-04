@@ -40,3 +40,13 @@
 :root.md ion-button {
   text-transform: none;
 }
+
+/* The tenth color: sky, the light blue of the logo */
+.ion-color-sky {
+  --ion-color-base: var(--ion-color-sky);
+  --ion-color-base-rgb: var(--ion-color-sky-rgb);
+  --ion-color-contrast: var(--ion-color-sky-contrast);
+  --ion-color-contrast-rgb: var(--ion-color-sky-contrast-rgb);
+  --ion-color-shade: var(--ion-color-sky-shade);
+  --ion-color-tint: var(--ion-color-sky-tint);
+}
