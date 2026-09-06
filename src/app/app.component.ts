@@ -1,13 +1,21 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { IonApp, IonSplitPane, IonMenu, IonContent, IonList,
          IonListHeader, IonNote, IonMenuToggle, IonItem,
-         IonIcon, IonLabel, IonRouterOutlet, IonRouterLink }
+         IonIcon, IonLabel, IonRouterOutlet, IonRouterLink,
+         IonFooter, IonRadioGroup, IonRadio }
         from '@ionic/angular';
 import { addIcons } from 'ionicons';
 import { homeOutline, homeSharp, mapOutline, mapSharp,
          informationOutline, informationSharp }
         from 'ionicons/icons';
+import { ThemeService, ThemeChoice }
+        from './services/theme.service';
+
+interface Appearance {
+  value: ThemeChoice;
+  title: string;
+}
 
 interface MenuEntry {
   title: string;
@@ -22,9 +30,18 @@ interface MenuEntry {
   imports: [RouterLink, RouterLinkActive, IonApp, IonSplitPane,
             IonMenu, IonContent, IonList, IonListHeader, IonNote,
             IonMenuToggle, IonItem, IonIcon, IonLabel,
-            IonRouterLink, IonRouterOutlet],
+            IonRouterLink, IonRouterOutlet,
+            IonFooter, IonRadioGroup, IonRadio],
 })
 export class AppComponent {
+  readonly theme = inject(ThemeService);
+
+  readonly appearances: Appearance[] = [
+    { value: 'light', title: 'Light' },
+    { value: 'dark', title: 'Dark' },
+    { value: 'system', title: 'System default' },
+  ];
+
   readonly pages: MenuEntry[] = [
     { title: 'Home', url: '/home', icon: 'home' },
     { title: 'Tours', url: '/tours', icon: 'map' },

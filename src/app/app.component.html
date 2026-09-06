@@ -25,6 +25,23 @@
           }
         </ion-list>
       </ion-content>
+      <ion-footer class="ion-padding">
+        <ion-note id="appearance">Appearance</ion-note>
+        <ion-radio-group
+          aria-labelledby="appearance"
+          [value]="theme.choice()"
+          (ionChange)="theme.choice.set($event.detail.value)">
+          @for (option of appearances; track option.value) {
+            <ion-radio
+              class="ion-padding-vertical"
+              [value]="option.value"
+              labelPlacement="end"
+              justify="start">
+              {{ option.title }}
+            </ion-radio>
+          }
+        </ion-radio-group>
+      </ion-footer>
     </ion-menu>
     <ion-router-outlet id="main-content"></ion-router-outlet>
   </ion-split-pane>
