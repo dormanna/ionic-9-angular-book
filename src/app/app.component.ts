@@ -1,14 +1,15 @@
 import { Component, inject } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { IonApp, IonSplitPane, IonMenu, IonContent, IonList,
-         IonListHeader, IonNote, IonMenuToggle, IonItem,
+         IonNote, IonMenuToggle, IonItem,
          IonIcon, IonLabel, IonRouterOutlet, IonRouterLink,
          IonFooter, IonRadioGroup, IonRadio }
         from '@ionic/angular';
 import { addIcons } from 'ionicons';
 import { homeOutline, homeSharp, mapOutline, mapSharp,
-         informationOutline, informationSharp }
+         informationCircleOutline, informationCircleSharp }
         from 'ionicons/icons';
+import { LogoComponent } from './pages/about/logo.component';
 import { ThemeService, ThemeChoice }
         from './services/theme.service';
 
@@ -28,10 +29,10 @@ interface MenuEntry {
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss'],
   imports: [RouterLink, RouterLinkActive, IonApp, IonSplitPane,
-            IonMenu, IonContent, IonList, IonListHeader, IonNote,
+            IonMenu, IonContent, IonList, IonNote,
             IonMenuToggle, IonItem, IonIcon, IonLabel,
             IonRouterLink, IonRouterOutlet,
-            IonFooter, IonRadioGroup, IonRadio],
+            IonFooter, IonRadioGroup, IonRadio, LogoComponent],
 })
 export class AppComponent {
   readonly theme = inject(ThemeService);
@@ -45,14 +46,15 @@ export class AppComponent {
   readonly pages: MenuEntry[] = [
     { title: 'Home', url: '/home', icon: 'home' },
     { title: 'Tours', url: '/tours', icon: 'map' },
-    { title: 'About', url: '/about', icon: 'information' },
+    { title: 'About', url: '/about',
+      icon: 'information-circle' },
   ];
 
   constructor() {
     addIcons({
       homeOutline, homeSharp,
       mapOutline, mapSharp,
-      informationOutline, informationSharp,
+      informationCircleOutline, informationCircleSharp,
     });
   }
 }
