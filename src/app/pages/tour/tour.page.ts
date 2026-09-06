@@ -1,11 +1,13 @@
-import { Component, computed, inject, input }
+import { Component, ElementRef, computed, inject, input,
+         viewChild }
         from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { IonHeader, IonToolbar, IonTitle, IonContent,
          IonButtons, IonBackButton, IonButton, IonIcon,
          IonCard, IonCardHeader, IonCardTitle,
          IonCardContent, IonChip, IonFab, IonFabButton,
-         IonGrid, IonRow, IonCol, IonRouterLink }
+         IonGrid, IonRow, IonCol, IonRouterLink,
+         AnimationController }
         from '@ionic/angular';
 import { addIcons } from 'ionicons';
 import { heart, heartOutline, timeOutline, peopleOutline,
@@ -32,6 +34,10 @@ import { FavoritesService }
 export class TourPage {
   private readonly tours = inject(TourService);
   private readonly favorites = inject(FavoritesService);
+  private readonly animations = inject(AnimationController);
+
+  private readonly heart =
+    viewChild.required('heart', { read: ElementRef });
 
   readonly id = input.required<string>();
   readonly tour = computed(() => this.tours.byId(this.id()));
@@ -47,5 +53,19 @@ export class TourPage {
 
   toggleFavorite() {
     this.favorites.toggle(this.id());
+    this.beat(this.isFavorite() ? 1.5 : 0.6);
+  }
+
+  private beat(peak: number) {
+    this.animations
+      .create()
+      .addElement(this.heart().nativeElement)
+      .duration(350)
+      .keyframes([
+        { offset: 0, transform: 'scale(1)' },
+        { offset: 0.4, transform: `scale(${peak})` },
+        { offset: 1, transform: 'scale(1)' },
+      ])
+      .play();
   }
 }
