@@ -6,6 +6,7 @@ import { IonHeader, IonToolbar, IonTitle, IonContent,
         from '@ionic/angular';
 import { TourService }
         from '../../services/tour.service';
+import { LogoComponent } from '../about/logo.component';
 
 @Component({
   selector: 'app-home',
@@ -13,7 +14,8 @@ import { TourService }
   styleUrl: './home.page.scss',
   imports: [RouterLink, IonHeader, IonToolbar, IonTitle,
             IonContent, IonButtons, IonMenuButton,
-            IonButton, IonRadio, IonRadioGroup],
+            IonButton, IonRadio, IonRadioGroup,
+            LogoComponent],
 })
 export class HomePage {
   private readonly service = inject(TourService);
