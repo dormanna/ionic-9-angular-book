@@ -21,6 +21,7 @@ const DEAREST = 400;
 @Component({
   selector: 'app-tours',
   templateUrl: './tours.page.html',
+  styleUrl: './tours.page.scss',
   imports: [RouterLink, IonRouterLink, IonHeader, IonToolbar,
             IonTitle, IonContent, IonButtons, IonMenuButton,
             IonList, IonItem, IonLabel, IonNote, IonBadge,

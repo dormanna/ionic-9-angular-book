@@ -133,7 +133,10 @@
           </ion-thumbnail>
           <ion-label>
             <h2>{{ tour.title }}</h2>
-            <p>from {{ tour.price }} EUR / group</p>
+            <p>
+              from <span class="price">{{ tour.price }} EUR</span>
+              / group
+            </p>
           </ion-label>
           <ion-note slot="end">{{ tour.duration }} min</ion-note>
         </ion-item>

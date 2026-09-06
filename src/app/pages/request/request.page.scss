@@ -1,3 +1,12 @@
+:host {
+  --ion-item-background: var(--ion-background-color);
+}
+
+ion-input.input-fill-outline,
+ion-textarea.textarea-fill-outline {
+  --background: #ffffff;
+}
+
 .language-price {
   font-size: 0.85em;
   color: var(--ion-color-medium);
