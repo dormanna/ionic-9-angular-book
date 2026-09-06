@@ -7,3 +7,15 @@ ion-thumbnail {
   color: var(--ion-color-primary);
   font-weight: 600;
 }
+
+ion-range {
+  padding-top: 0;
+  padding-inline-end: 17px;
+}
+
+ion-range + p {
+  margin-top: 0;
+  padding-right: 17px;
+  text-align: right;
+  color: rgba(var(--ion-text-color-rgb), 0.6);
+}

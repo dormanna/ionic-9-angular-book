@@ -50,3 +50,8 @@
   --ion-color-shade: var(--ion-color-sky-shade);
   --ion-color-tint: var(--ion-color-sky-tint);
 }
+
+/* Headings in the brand color */
+h1, h2 {
+  color: var(--ion-color-primary);
+}
