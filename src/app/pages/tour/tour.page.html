@@ -3,7 +3,9 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/tours"></ion-back-button>
     </ion-buttons>
-    <ion-title>{{ tour()?.title }}</ion-title>
+    <ion-title role="heading" aria-level="1">
+      {{ tour()?.title }}
+    </ion-title>
     <ion-buttons slot="end">
       <ion-button
         (click)="toggleFavorite()"
