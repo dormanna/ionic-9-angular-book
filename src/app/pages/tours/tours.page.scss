@@ -19,3 +19,8 @@ ion-range + p {
   text-align: right;
   color: rgba(var(--ion-text-color-rgb), 0.6);
 }
+
+ion-note[slot="end"] {
+  max-width: 25%;
+  overflow-wrap: normal;
+}
