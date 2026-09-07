@@ -57,6 +57,9 @@ export class TourPage {
   }
 
   private beat(peak: number) {
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      return;
+    }
     this.animations
       .create()
       .addElement(this.heart().nativeElement)

@@ -12,7 +12,11 @@ import { AppComponent } from './app/app.component';
 bootstrapApplication(AppComponent, {
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    provideIonicAngular(),
+    provideIonicAngular({
+      animated: !window.matchMedia(
+        '(prefers-reduced-motion: reduce)',
+      ).matches,
+    }),
     provideSignalFormsConfig({ classes: NG_STATUS_CLASSES }),
     provideRouter(routes, withPreloading(PreloadAllModules), withComponentInputBinding()),
   ],
