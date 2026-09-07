@@ -92,7 +92,10 @@
       </ion-range>
       <p>
         @if (maxPrice() < dearest) {
-          Up to {{ maxPrice() }} EUR / group
+          Up to {{ maxPrice() }} EUR
+          <span aria-hidden="true"> / </span>
+          <span class="visually-hidden">per</span>
+          group
         } @else {
           No price limit
         }
@@ -135,7 +138,9 @@
             <h2>{{ tour.title }}</h2>
             <p>
               from <span class="price">{{ tour.price }} EUR</span>
-              / group
+              <span aria-hidden="true"> / </span>
+              <span class="visually-hidden">per</span>
+              group
             </p>
           </ion-label>
           <ion-note slot="end">{{ tour.duration }} min</ion-note>
