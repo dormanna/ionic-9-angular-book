@@ -8,9 +8,11 @@ import { IonHeader, IonToolbar, IonTitle, IonContent,
          IonThumbnail, IonSpinner, IonText, IonRange,
          IonRefresher, IonRefresherContent, IonButton,
          IonSearchbar, IonSegment, IonSegmentButton,
-         IonSelect, IonSelectOption,
+         IonSelect, IonSelectOption, IonIcon,
          RefresherCustomEvent }
         from '@ionic/angular';
+import { addIcons } from 'ionicons';
+import { refreshOutline } from 'ionicons/icons';
 import { TourService } from '../../services/tour.service';
 import { FavoritesService }
         from '../../services/favorites.service';
@@ -28,7 +30,7 @@ const DEAREST = 400;
             IonThumbnail, IonSpinner, IonText, IonRange,
             IonRefresher, IonRefresherContent, IonButton,
             IonSearchbar, IonSegment, IonSegmentButton,
-            IonSelect, IonSelectOption],
+            IonSelect, IonSelectOption, IonIcon],
 })
 export class ToursPage {
   private readonly service = inject(TourService);
@@ -74,6 +76,7 @@ export class ToursPage {
   private finishPull: (() => void) | null = null;
 
   constructor() {
+    addIcons({ refreshOutline });
     effect(() => {
       if (!this.service.isLoading() && this.finishPull) {
         this.finishPull();

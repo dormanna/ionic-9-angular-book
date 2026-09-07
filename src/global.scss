@@ -65,3 +65,25 @@ h1, h2 {
   clip-path: inset(50%);
   white-space: nowrap;
 }
+
+/* A focus ring on every Ionic control */
+.ion-focused,
+ion-searchbar:focus-within,
+ion-range:focus-within {
+  outline: 3px solid var(--ion-color-primary);
+  outline-offset: 2px;
+}
+
+ion-toolbar .ion-focused,
+ion-toolbar ion-searchbar:focus-within {
+  outline-color: var(--ion-toolbar-color);
+}
+
+ion-item.ion-focused {
+  outline: none;
+}
+
+ion-item.ion-focused::part(native) {
+  outline: 3px solid var(--ion-color-primary);
+  outline-offset: -3px;
+}
