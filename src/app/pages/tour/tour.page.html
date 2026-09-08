@@ -58,6 +58,23 @@
                 </ion-icon>
                 <span>from {{ tour.price }} EUR per group</span>
               </ion-chip>
+              <ion-chip>
+                <ion-icon
+                  name="location-outline"
+                  aria-hidden="true">
+                </ion-icon>
+                <span>{{ tour.startingPoint.location }}</span>
+              </ion-chip>
+              <ion-button
+                fill="outline"
+                (click)="openDirections()">
+                <ion-icon
+                  slot="start"
+                  name="navigate-outline"
+                  aria-hidden="true">
+                </ion-icon>
+                Directions
+              </ion-button>
             </ion-card-content>
           </ion-col>
         </ion-row>

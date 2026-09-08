@@ -22,6 +22,11 @@ interface TourPayload {
   MaxPersons: number;
   PriceG: number;
   PriceF: number;
+  StartingPoint: {
+    Lat: string;
+    Lng: string;
+    Location: string;
+  };
 }
 
 const toTour = (t: TourPayload): Tour => ({
@@ -34,6 +39,11 @@ const toTour = (t: TourPayload): Tour => ({
   maxPersons: t.MaxPersons,
   price: t.PriceG,
   priceForeign: t.PriceF,
+  startingPoint: {
+    lat: Number(t.StartingPoint.Lat),
+    lng: Number(t.StartingPoint.Lng),
+    location: t.StartingPoint.Location,
+  },
 });
 
 export interface Criteria {

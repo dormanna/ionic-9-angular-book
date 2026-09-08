@@ -8,4 +8,9 @@ export interface Tour {
   maxPersons: number;
   price: number;
   priceForeign: number;
+  startingPoint: {
+    lat: number;
+    lng: number;
+    location: string;
+  };
 }

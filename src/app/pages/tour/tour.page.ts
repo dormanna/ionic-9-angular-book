@@ -9,11 +9,12 @@ import { IonHeader, IonToolbar, IonTitle, IonContent,
          IonFabList, IonGrid, IonRow, IonCol, IonRouterLink,
          AnimationController }
         from '@ionic/angular';
+import { Capacitor } from '@capacitor/core';
 import { Share } from '@capacitor/share';
 import { addIcons } from 'ionicons';
 import { heart, heartOutline, timeOutline, peopleOutline,
          cashOutline, paperPlaneOutline, ellipsisHorizontal,
-         shareSocialOutline }
+         shareSocialOutline, locationOutline, navigateOutline }
         from 'ionicons/icons';
 import { TourService } from '../../services/tour.service';
 import { FavoritesService }
@@ -53,9 +54,24 @@ export class TourPage {
     addIcons({ heart, heartOutline, timeOutline,
                peopleOutline, cashOutline,
                paperPlaneOutline, ellipsisHorizontal,
-               shareSocialOutline });
+               shareSocialOutline, locationOutline,
+               navigateOutline });
     Share.canShare()
       .then(({ value }) => this.canShare.set(value));
+  }
+
+  openDirections() {
+    const tour = this.tour();
+    if (!tour) {
+      return;
+    }
+    const { lat, lng, location } = tour.startingPoint;
+    const url = Capacitor.getPlatform() === 'android'
+      ? 'https://www.google.com/maps/search/?api=1'
+        + `&query=${lat},${lng}`
+      : `https://maps.apple.com/?ll=${lat},${lng}`
+        + `&q=${encodeURIComponent(location)}`;
+    window.open(url, '_blank');
   }
 
   async share() {
