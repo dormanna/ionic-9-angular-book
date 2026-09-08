@@ -3,6 +3,7 @@ import { Service, computed, effect, inject, signal }
 import { Platform } from '@ionic/angular';
 import { SystemBars, SystemBarsStyle, SystemBarType }
         from '@capacitor/core';
+import { Preferences } from '@capacitor/preferences';
 
 export type ThemeChoice = 'system' | 'light' | 'dark';
 
@@ -24,6 +25,20 @@ export class ThemeService {
     (this.choice() === 'system' && this.systemDark()));
 
   private readonly ios = inject(Platform).is('ios');
+
+  async restore() {
+    const { value } =
+      await Preferences.get({ key: 'appearance' });
+    if (value === 'light' || value === 'dark'
+        || value === 'system') {
+      this.choice.set(value);
+    }
+  }
+
+  async choose(value: ThemeChoice) {
+    this.choice.set(value);
+    await Preferences.set({ key: 'appearance', value });
+  }
 
   constructor() {
     this.query.addEventListener('change', (event) =>

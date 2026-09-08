@@ -30,7 +30,7 @@
         <ion-radio-group
           aria-labelledby="appearance"
           [value]="theme.choice()"
-          (ionChange)="theme.choice.set($event.detail.value)">
+          (ionChange)="theme.choose($event.detail.value)">
           @for (option of appearances; track option.value) {
             <ion-radio
               class="ion-padding-vertical"
