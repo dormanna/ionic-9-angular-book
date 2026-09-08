@@ -182,6 +182,13 @@
     {{ sending() ? 'Sending…' : 'Send request' }}
   </ion-button>
 
+  <ion-text color="medium" role="status">
+    @if (!network.connected()) {
+      <p>You seem to be offline. The request can be sent
+         once you are connected again.</p>
+    }
+  </ion-text>
+
   @if (failed()) {
     <ion-text color="danger" role="alert">
       <p>The request could not be sent. Try again.</p>

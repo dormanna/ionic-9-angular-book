@@ -18,6 +18,8 @@ import { IonHeader, IonToolbar, IonTitle, IonContent,
 import { TourService } from '../../services/tour.service';
 import { RequestService }
         from '../../services/request.service';
+import { NetworkService }
+        from '../../services/network.service';
 import { TourRequest } from '../../models/request';
 import { GroupSizeComponent } from './group-size.component';
 
@@ -49,6 +51,7 @@ export class RequestPage {
   private readonly requests = inject(RequestService);
   private readonly toasts = inject(ToastController);
   private readonly nav = inject(NavController);
+  readonly network = inject(NetworkService);
 
   readonly id = input.required<string>();
   readonly tour = computed(() => this.tours.byId(this.id()));
@@ -117,6 +120,9 @@ export class RequestPage {
   async send() {
     this.failed.set(false);
     await submit(this.requestForm, async () => {
+      if (!this.network.connected()) {
+        return undefined;
+      }
       this.sending.set(true);
       try {
         await this.requests.send(this.payload());
