@@ -1,5 +1,7 @@
 ion-menu ion-content {
-  --background: var(--ion-item-background, var(--ion-background-color, #fff));
+  --background: var(--ion-item-background,
+                    var(--ion-background-color, #fff));
+  --padding-top: var(--ion-safe-area-top, 0);
 }
 
 ion-menu ion-footer {
@@ -9,7 +11,7 @@ ion-menu ion-footer {
 ion-menu.md ion-content {
   --padding-start: 8px;
   --padding-end: 8px;
-  --padding-top: 20px;
+  --padding-top: calc(var(--ion-safe-area-top, 0px) + 20px);
   --padding-bottom: 20px;
 }
 

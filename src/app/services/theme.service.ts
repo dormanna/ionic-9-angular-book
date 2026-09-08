@@ -1,4 +1,8 @@
-import { Service, effect, signal } from '@angular/core';
+import { Service, computed, effect, inject, signal }
+        from '@angular/core';
+import { Platform } from '@ionic/angular';
+import { SystemBars, SystemBarsStyle, SystemBarType }
+        from '@capacitor/core';
 
 export type ThemeChoice = 'system' | 'light' | 'dark';
 
@@ -15,6 +19,12 @@ export class ThemeService {
   private readonly moreContrast =
     signal(this.contrastQuery.matches);
 
+  private readonly dark = computed(() =>
+    this.choice() === 'dark' ||
+    (this.choice() === 'system' && this.systemDark()));
+
+  private readonly ios = inject(Platform).is('ios');
+
   constructor() {
     this.query.addEventListener('change', (event) =>
       this.systemDark.set(event.matches));
@@ -28,11 +38,20 @@ export class ThemeService {
     });
 
     effect(() => {
-      const dark =
-        this.choice() === 'dark' ||
-        (this.choice() === 'system' && this.systemDark());
       document.documentElement.classList
-        .toggle('ion-palette-dark', dark);
+        .toggle('ion-palette-dark', this.dark());
+    });
+
+    effect(() => {
+      // The icons follow the toolbar: marine wants light ones,
+      // the sky toolbar of iOS's dark palette wants dark ones.
+      const lightToolbar = this.dark() && this.ios;
+      SystemBars.setStyle({
+        style: lightToolbar
+          ? SystemBarsStyle.Light
+          : SystemBarsStyle.Dark,
+        bar: SystemBarType.StatusBar,
+      });
     });
   }
 }
