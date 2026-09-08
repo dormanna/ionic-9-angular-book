@@ -65,12 +65,30 @@
     </ion-card>
 
     <ion-fab slot="fixed" vertical="bottom" horizontal="end">
-      <ion-fab-button
-        [routerLink]="['/tours', id(), 'request']"
-        aria-label="Request this tour">
-        <ion-icon name="paper-plane-outline" aria-hidden="true">
+      <ion-fab-button aria-label="Tour actions">
+        <ion-icon name="ellipsis-horizontal" aria-hidden="true">
         </ion-icon>
       </ion-fab-button>
+      <ion-fab-list side="top">
+        <ion-fab-button
+          [routerLink]="['/tours', id(), 'request']"
+          aria-label="Request this tour">
+          <ion-icon
+            name="paper-plane-outline"
+            aria-hidden="true">
+          </ion-icon>
+        </ion-fab-button>
+        @if (canShare()) {
+          <ion-fab-button
+            (click)="share()"
+            aria-label="Share this tour">
+            <ion-icon
+              name="share-social-outline"
+              aria-hidden="true">
+            </ion-icon>
+          </ion-fab-button>
+        }
+      </ion-fab-list>
     </ion-fab>
   }
 </ion-content>

@@ -1,17 +1,19 @@
 import { Component, ElementRef, computed, inject, input,
-         viewChild }
+         signal, viewChild }
         from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { IonHeader, IonToolbar, IonTitle, IonContent,
          IonButtons, IonBackButton, IonButton, IonIcon,
          IonCard, IonCardHeader, IonCardTitle,
          IonCardContent, IonChip, IonFab, IonFabButton,
-         IonGrid, IonRow, IonCol, IonRouterLink,
+         IonFabList, IonGrid, IonRow, IonCol, IonRouterLink,
          AnimationController }
         from '@ionic/angular';
+import { Share } from '@capacitor/share';
 import { addIcons } from 'ionicons';
 import { heart, heartOutline, timeOutline, peopleOutline,
-         cashOutline, paperPlaneOutline }
+         cashOutline, paperPlaneOutline, ellipsisHorizontal,
+         shareSocialOutline }
         from 'ionicons/icons';
 import { TourService } from '../../services/tour.service';
 import { FavoritesService }
@@ -29,7 +31,7 @@ import { FavoritesService }
             IonTitle, IonContent, IonButtons, IonBackButton,
             IonButton, IonIcon, IonCard, IonCardHeader,
             IonCardTitle, IonCardContent, IonChip, IonFab,
-            IonFabButton, IonGrid, IonRow, IonCol],
+            IonFabButton, IonFabList, IonGrid, IonRow, IonCol],
 })
 export class TourPage {
   private readonly tours = inject(TourService);
@@ -45,10 +47,31 @@ export class TourPage {
   readonly isFavorite =
     computed(() => this.favorites.all().includes(this.id()));
 
+  readonly canShare = signal(false);
+
   constructor() {
     addIcons({ heart, heartOutline, timeOutline,
                peopleOutline, cashOutline,
-               paperPlaneOutline });
+               paperPlaneOutline, ellipsisHorizontal,
+               shareSocialOutline });
+    Share.canShare()
+      .then(({ value }) => this.canShare.set(value));
+  }
+
+  async share() {
+    const tour = this.tour();
+    if (!tour) {
+      return;
+    }
+    try {
+      await Share.share({
+        title: tour.title,
+        text: tour.summary,
+        dialogTitle: 'Share this tour',
+      });
+    } catch {
+      // Canceling and failing to share are both silent here.
+    }
   }
 
   toggleFavorite() {
