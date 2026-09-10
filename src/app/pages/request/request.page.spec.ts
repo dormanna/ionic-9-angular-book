@@ -1,4 +1,5 @@
 import { TestBed } from '@angular/core/testing';
+import { vi } from 'vitest';
 import { provideRouter } from '@angular/router';
 import { NavController, ToastController }
         from '@ionic/angular';
@@ -7,6 +8,8 @@ import { RequestPage } from './request.page';
 import { TourService } from '../../services/tour.service';
 import { RequestService }
         from '../../services/request.service';
+import { NetworkService }
+        from '../../services/network.service';
 import { Tour } from '../../models/tour';
 
 const tour: Tour = {
@@ -97,5 +100,68 @@ describe('RequestPage', () => {
 
     expect(request.request().email)
       .toBe('anna@example.com');
+  });
+
+  it('sends nothing when the form is empty', async () => {
+    const send = vi.fn(async () => ({ ID: 42 }));
+    TestBed.overrideProvider(RequestService, {
+      useValue: { send },
+    });
+    TestBed.overrideProvider(NetworkService, {
+      useValue: { connected: () => true },
+    });
+
+    const request = await page();
+    await request.send();
+
+    expect(send).not.toHaveBeenCalled();
+  });
+
+  it('sends once, without a pick-up the bus will not '
+     + 'make', async () => {
+    const send = vi.fn(async () => ({ ID: 42 }));
+    TestBed.overrideProvider(RequestService, {
+      useValue: { send },
+    });
+    TestBed.overrideProvider(NetworkService, {
+      useValue: { connected: () => true },
+    });
+
+    const request = await page();
+    const form = request.requestForm;
+    form.firstName().value.set('Anna');
+    form.lastName().value.set('Meyer');
+    form.email().value.set('anna@example.com');
+    form.pickUp().value.set('Hotel Sternchen');
+    await request.send();
+
+    expect(send).toHaveBeenCalledTimes(1);
+    expect(send).toHaveBeenCalledWith(
+      expect.objectContaining({
+        email: 'anna@example.com',
+        bus: false,
+        pickUp: '',
+      }),
+    );
+  });
+
+  it('sends nothing while there is no connection',
+     async () => {
+    const send = vi.fn(async () => ({ ID: 42 }));
+    TestBed.overrideProvider(RequestService, {
+      useValue: { send },
+    });
+    TestBed.overrideProvider(NetworkService, {
+      useValue: { connected: () => false },
+    });
+
+    const request = await page();
+    const form = request.requestForm;
+    form.firstName().value.set('Anna');
+    form.lastName().value.set('Meyer');
+    form.email().value.set('anna@example.com');
+    await request.send();
+
+    expect(send).not.toHaveBeenCalled();
   });
 });
