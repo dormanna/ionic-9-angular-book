@@ -80,4 +80,22 @@ describe('RequestPage', () => {
 
     expect(form().valid()).toBe(true);
   });
+
+  it('takes the value from an ionInput event',
+     async () => {
+    const fixture = TestBed.createComponent(RequestPage);
+    fixture.componentRef.setInput('id', '1');
+    await fixture.whenStable();
+    const request = fixture.componentInstance;
+
+    const email: HTMLIonInputElement =
+      fixture.nativeElement
+        .querySelector('ion-input[type="email"]');
+
+    email.value = 'anna@example.com';
+    email.dispatchEvent(new CustomEvent('ionInput'));
+
+    expect(request.request().email)
+      .toBe('anna@example.com');
+  });
 });
