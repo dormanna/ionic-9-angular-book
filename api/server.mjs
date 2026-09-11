@@ -66,9 +66,25 @@ const routes = {
   'GET /api/requests': () => requests,
 };
 
+// A native app is a different origin than this server, so the
+// browser inside it asks permission first. Development only: in
+// production, name the origins you serve.
+const allowOrigin = (res) => {
+  const allow = 'Access-Control-Allow-';
+  res.setHeader(`${allow}Origin`, '*');
+  res.setHeader(`${allow}Headers`, 'Content-Type');
+  res.setHeader(`${allow}Methods`, 'GET, POST, OPTIONS');
+};
+
 const server = createServer(async (req, res) => {
   const url = new URL(req.url, `http://localhost:${PORT}`);
   const path = url.pathname;
+
+  allowOrigin(res);
+  if (req.method === 'OPTIONS') {
+    res.writeHead(204);
+    return res.end();
+  }
 
   if (req.method === 'GET') {
     const picture = await image(path);
