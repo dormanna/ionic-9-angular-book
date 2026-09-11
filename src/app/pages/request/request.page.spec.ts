@@ -1,5 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { vi } from 'vitest';
+import axe from 'axe-core';
 import { provideRouter } from '@angular/router';
 import { NavController, ToastController }
         from '@ionic/angular';
@@ -163,5 +164,24 @@ describe('RequestPage', () => {
     await request.send();
 
     expect(send).not.toHaveBeenCalled();
+  });
+
+  it('has no accessibility violations of its own',
+     async () => {
+    const fixture = TestBed.createComponent(RequestPage);
+    fixture.componentRef.setInput('id', '1');
+    await fixture.whenStable();
+
+    const context = {
+      include: [fixture.nativeElement],
+      exclude: [
+        ['ion-modal'], ['ion-popover'], ['ion-toggle'],
+      ],
+    };
+    const result = await axe.run(context, {
+      rules: { 'color-contrast': { enabled: false } },
+    });
+
+    expect(result.violations.map((v) => v.id)).toEqual([]);
   });
 });
