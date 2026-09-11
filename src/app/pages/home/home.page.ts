@@ -7,6 +7,7 @@ import { IonHeader, IonToolbar, IonTitle, IonContent,
 import { TourService }
         from '../../services/tour.service';
 import { LogoComponent } from '../about/logo.component';
+import { apiUrl } from '../../services/api';
 
 @Component({
   selector: 'app-home',
@@ -21,6 +22,8 @@ export class HomePage {
   private readonly service = inject(TourService);
   private readonly router = inject(Router);
 
+  readonly heroUrl =
+    apiUrl('/api/img/big/bonn-rhein-schiff.jpg');
   readonly regions = this.service.regions;
   readonly region = signal('BN');
 

@@ -2,6 +2,7 @@ import { Service, computed, linkedSignal, signal }
         from '@angular/core';
 import { httpResource } from '@angular/common/http';
 import { Tour } from '../models/tour';
+import { apiUrl } from './api';
 
 interface LookupPayload {
   ID: string;
@@ -33,8 +34,8 @@ const toTour = (t: TourPayload): Tour => ({
   id: String(t.ID),
   title: t.Title,
   summary: t.Description,
-  imageUrl: `/api/img/big/${t.Image}`,
-  thumbnailUrl: `/api/img/small/${t.Image}`,
+  imageUrl: apiUrl(`/api/img/big/${t.Image}`),
+  thumbnailUrl: apiUrl(`/api/img/small/${t.Image}`),
   duration: t.Duration,
   maxPersons: t.MaxPersons,
   price: t.PriceG,
@@ -72,7 +73,9 @@ export class TourService {
       params.set('tourType', criteria.tourType);
     }
     const query = params.toString();
-    return query ? `/api/tours?${query}` : '/api/tours';
+    return apiUrl(
+      query ? `/api/tours?${query}` : '/api/tours',
+    );
   }
 
   narrowTo(criteria: Criteria) {
@@ -85,14 +88,16 @@ export class TourService {
   );
 
   private readonly regionResource =
-    httpResource<LookupPayload[]>(() => '/api/regions', {
-      defaultValue: [],
-    });
+    httpResource<LookupPayload[]>(
+      () => apiUrl('/api/regions'),
+      { defaultValue: [] },
+    );
 
   private readonly typeResource =
-    httpResource<LookupPayload[]>(() => '/api/tourtypes', {
-      defaultValue: [],
-    });
+    httpResource<LookupPayload[]>(
+      () => apiUrl('/api/tourtypes'),
+      { defaultValue: [] },
+    );
 
   readonly regions = computed(() =>
     this.regionResource.hasValue()

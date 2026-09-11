@@ -2,6 +2,7 @@ import { Service, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { TourRequest } from '../models/request';
+import { apiUrl } from './api';
 
 export interface SavedRequest extends TourRequest {
   ID: number;
@@ -14,7 +15,7 @@ export class RequestService {
   send(request: TourRequest) {
     return firstValueFrom(
       this.http.post<SavedRequest>(
-        '/api/requests',
+        apiUrl('/api/requests'),
         request,
       ),
     );
