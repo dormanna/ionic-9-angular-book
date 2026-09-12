@@ -1,8 +1,8 @@
 {
   "name": "bob-tours",
-  "version": "0.0.1",
-  "author": "Ionic Framework",
-  "homepage": "https://ionicframework.com/",
+  "version": "1.0.0",
+  "author": "Andreas Dormann",
+  "homepage": "https://bob-tours.example/",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
