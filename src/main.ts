@@ -1,4 +1,5 @@
-import { inject, provideAppInitializer } from '@angular/core';
+import { inject, isDevMode, provideAppInitializer }
+        from '@angular/core';
 import { bootstrapApplication } from '@angular/platform-browser';
 import { RouteReuseStrategy, provideRouter, withComponentInputBinding, withPreloading, PreloadAllModules } from '@angular/router';
 import { IonicRouteStrategy, provideIonicAngular } from '@ionic/angular';
@@ -12,6 +13,9 @@ import { AppComponent } from './app/app.component';
 import { ThemeService } from './app/services/theme.service';
 import { FavoritesService }
         from './app/services/favorites.service';
+import { provideServiceWorker }
+        from '@angular/service-worker';
+import { Capacitor } from '@capacitor/core';
 
 bootstrapApplication(AppComponent, {
   providers: [
@@ -29,5 +33,13 @@ bootstrapApplication(AppComponent, {
       await favorites.restore();
     }),
     provideRouter(routes, withPreloading(PreloadAllModules), withComponentInputBinding()),
+    // Only the web delivery benefits from a cache. A shell
+    // already carries its files, and on Android the worker
+    // would serve the previous version on the first start
+    // after an update.
+    provideServiceWorker('ngsw-worker.js', {
+      enabled: !isDevMode() && !Capacitor.isNativePlatform(),
+      registrationStrategy: 'registerWhenStable:30000',
+    }),
   ],
 });
