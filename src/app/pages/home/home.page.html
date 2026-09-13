@@ -3,7 +3,7 @@
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-title>Home</ion-title>
+    <ion-title i18n="@@menu.home">Home</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -11,19 +11,22 @@
   <img
     class="hero"
     [src]="heroUrl"
-    alt="The Rhine at Bonn under a summer sky">
+    alt="The Rhine at Bonn under a summer sky"
+    i18n-alt="@@home.heroAlt">
 
   <div class="ion-padding">
     <app-logo></app-logo>
 
     <h1>Best of Bonn Tours</h1>
 
-    <p>
+    <p i18n="@@home.intro">
       Discover Bonn, the Rhine and the Seven Mountains
       with experienced local guides.
     </p>
 
-    <h2 id="region">Which region would you like to explore?</h2>
+    <h2 id="region" i18n="@@home.region">
+      Which region would you like to explore?
+    </h2>
 
     <ion-radio-group
       aria-labelledby="region"
@@ -43,7 +46,8 @@
     <ion-button
       class="ion-margin-top"
       expand="block"
-      (click)="showRegion()">
+      (click)="showRegion()"
+      i18n="@@home.show">
       Show tours
     </ion-button>
 
@@ -51,7 +55,8 @@
       class="ion-margin-top"
       expand="block"
       fill="outline"
-      routerLink="/tours">
+      routerLink="/tours"
+      i18n="@@home.browse">
       Browse all tours
     </ion-button>
   </div>

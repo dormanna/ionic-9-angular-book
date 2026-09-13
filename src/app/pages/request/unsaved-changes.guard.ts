@@ -12,11 +12,14 @@ export const unsavedChanges:
   }
 
   const alert = await alerts.create({
-    header: 'Leave this request?',
-    message: 'What you have typed in will be lost.',
+    header: $localize`:@@leave.header:Leave this request?`,
+    message: $localize`:@@leave.message:What you have typed
+      in will be lost.`,
     buttons: [
-      { text: 'Keep editing', role: 'cancel' },
-      { text: 'Discard', role: 'destructive' },
+      { text: $localize`:@@leave.keep:Keep editing`,
+        role: 'cancel' },
+      { text: $localize`:@@leave.discard:Discard`,
+        role: 'destructive' },
     ],
   });
 

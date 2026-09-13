@@ -1,7 +1,10 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/tours"></ion-back-button>
+      <ion-back-button
+        defaultHref="/tours"
+        text="Back"
+        i18n-text="@@back"></ion-back-button>
     </ion-buttons>
     <ion-title role="heading" aria-level="1">
       {{ tour()?.title }}
@@ -9,9 +12,7 @@
     <ion-buttons slot="end">
       <ion-button
         (click)="toggleFavorite()"
-        [attr.aria-label]="isFavorite()
-          ? 'Remove from favorites'
-          : 'Add to favorites'">
+        [attr.aria-label]="favoriteLabel()">
         <ion-icon
           #heart
           slot="icon-only"
@@ -49,14 +50,18 @@
                   name="people-outline"
                   aria-hidden="true">
                 </ion-icon>
-                <span>up to {{ tour.maxPersons }} people</span>
+                <span i18n="@@tour.upTo">
+                  up to {{ tour.maxPersons }} people
+                </span>
               </ion-chip>
               <ion-chip>
                 <ion-icon
                   name="cash-outline"
                   aria-hidden="true">
                 </ion-icon>
-                <span>from {{ tour.price }} EUR per group</span>
+                <span i18n="@@tour.from">
+                  from {{ tour.price }} EUR per group
+                </span>
               </ion-chip>
               <ion-chip>
                 <ion-icon
@@ -73,7 +78,9 @@
                   name="navigate-outline"
                   aria-hidden="true">
                 </ion-icon>
-                Directions
+                <ng-container i18n="@@tour.directions">
+                  Directions
+                </ng-container>
               </ion-button>
             </ion-card-content>
           </ion-col>
@@ -82,14 +89,16 @@
     </ion-card>
 
     <ion-fab slot="fixed" vertical="bottom" horizontal="end">
-      <ion-fab-button aria-label="Tour actions">
+      <ion-fab-button aria-label="Tour actions"
+                      i18n-aria-label="@@tour.actions">
         <ion-icon name="ellipsis-horizontal" aria-hidden="true">
         </ion-icon>
       </ion-fab-button>
       <ion-fab-list side="top">
         <ion-fab-button
           [routerLink]="['/tours', id(), 'request']"
-          aria-label="Request this tour">
+          aria-label="Request this tour"
+          i18n-aria-label="@@tour.request">
           <ion-icon
             name="paper-plane-outline"
             aria-hidden="true">
@@ -98,7 +107,8 @@
         @if (canShare()) {
           <ion-fab-button
             (click)="share()"
-            aria-label="Share this tour">
+            aria-label="Share this tour"
+            i18n-aria-label="@@tour.share">
             <ion-icon
               name="share-social-outline"
               aria-hidden="true">

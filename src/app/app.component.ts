@@ -12,6 +12,8 @@ import { homeOutline, homeSharp, mapOutline, mapSharp,
 import { LogoComponent } from './pages/about/logo.component';
 import { ThemeService, ThemeChoice }
         from './services/theme.service';
+import { LanguageService }
+        from './services/language.service';
 
 interface Appearance {
   value: ThemeChoice;
@@ -36,18 +38,22 @@ interface MenuEntry {
 })
 export class AppComponent {
   readonly theme = inject(ThemeService);
+  readonly language = inject(LanguageService);
 
   readonly appearances: Appearance[] = [
-    { value: 'light', title: 'Light' },
-    { value: 'dark', title: 'Dark' },
-    { value: 'system', title: 'System default' },
+    { value: 'light', title: $localize`:@@menu.light:Light` },
+    { value: 'dark', title: $localize`:@@menu.dark:Dark` },
+    { value: 'system',
+      title: $localize`:@@menu.system:System default` },
   ];
 
   readonly pages: MenuEntry[] = [
-    { title: 'Home', url: '/home', icon: 'home' },
-    { title: 'Tours', url: '/tours', icon: 'map' },
-    { title: 'About', url: '/about',
-      icon: 'information-circle' },
+    { title: $localize`:@@menu.home:Home`,
+      url: '/home', icon: 'home' },
+    { title: $localize`:@@menu.tours:Tours`,
+      url: '/tours', icon: 'map' },
+    { title: $localize`:@@menu.about:About`,
+      url: '/about', icon: 'information-circle' },
   ];
 
   constructor() {

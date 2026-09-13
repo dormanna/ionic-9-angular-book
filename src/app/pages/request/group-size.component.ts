@@ -10,6 +10,7 @@ import { IonPicker, IonPickerColumn,
     <ion-picker>
       <ion-picker-column
         aria-label="Number of people"
+        i18n-aria-label="@@request.people"
         [value]="value()"
         (ionChange)="take($event.detail.value)">
         @for (size of sizes(); track size) {

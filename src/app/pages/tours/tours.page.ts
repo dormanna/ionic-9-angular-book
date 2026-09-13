@@ -49,6 +49,11 @@ export class ToursPage {
     return tours.filter((tour) => ids.includes(tour.id));
   });
 
+  readonly countLabel = computed(() => {
+    const count = this.shown().length;
+    return $localize`:@@tours.count:${count}:count: tours`;
+  });
+
   readonly firstLoad = this.service.firstLoad;
   readonly error = this.service.error;
 

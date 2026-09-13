@@ -1,5 +1,5 @@
-import { Service, computed, linkedSignal, signal }
-        from '@angular/core';
+import { LOCALE_ID, Service, computed, inject, linkedSignal,
+         signal } from '@angular/core';
 import { httpResource } from '@angular/common/http';
 import { Tour } from '../models/tour';
 import { apiUrl } from './api';
@@ -58,6 +58,14 @@ export interface Criteria {
 export class TourService {
   private readonly criteria = signal<Criteria>({});
 
+  // The API answers in the language the app was started in.
+  private readonly language = inject(LOCALE_ID);
+
+  private request(url: string) {
+    const headers = { 'Accept-Language': this.language };
+    return { url, headers };
+  }
+
   private urlFor(criteria: Criteria) {
     const params = new URLSearchParams();
     if (criteria.maxPrice !== undefined) {
@@ -83,19 +91,19 @@ export class TourService {
   }
 
   private readonly resource = httpResource<TourPayload[]>(
-    () => this.urlFor(this.criteria()),
+    () => this.request(this.urlFor(this.criteria())),
     { defaultValue: [] },
   );
 
   private readonly regionResource =
     httpResource<LookupPayload[]>(
-      () => apiUrl('/api/regions'),
+      () => this.request(apiUrl('/api/regions')),
       { defaultValue: [] },
     );
 
   private readonly typeResource =
     httpResource<LookupPayload[]>(
-      () => apiUrl('/api/tourtypes'),
+      () => this.request(apiUrl('/api/tourtypes')),
       { defaultValue: [] },
     );
 

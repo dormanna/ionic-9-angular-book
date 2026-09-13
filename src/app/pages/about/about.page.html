@@ -3,31 +3,39 @@
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-title role="heading" aria-level="1">About</ion-title>
+    <ion-title role="heading" aria-level="1"
+               i18n="@@menu.about">About</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-padding">
   <app-logo></app-logo>
 
-  <p>
+  <p i18n="@@about.company">
     BoB Tours is a dedicated and successful company that
     wants to show you the sights and attractions of Bonn
     and its surroundings.
   </p>
 
-  <p>BoB Tours is fictional. The beauty of Bonn is not.</p>
+  <p i18n="@@about.fictional">
+    BoB Tours is fictional. The beauty of Bonn is not.
+  </p>
 
-  <ion-button id="colophon" fill="clear">
+  <ion-button id="colophon" fill="clear"
+              i18n="@@about.colophon">
     Developer &amp; technology
   </ion-button>
 
   <ion-popover trigger="colophon">
     <ng-template>
       <ion-content class="ion-padding">
-        <h2>Behind BoB Tours</h2>
-        <p>Developed and photographed by Andreas Dormann</p>
-        <p>Built with love, Ionic 9 and Angular 22</p>
+        <h2 i18n="@@about.behind">Behind BoB Tours</h2>
+        <p i18n="@@about.developed">
+          Developed and photographed by Andreas Dormann
+        </p>
+        <p i18n="@@about.built">
+          Built with love, Ionic 9 and Angular 22
+        </p>
       </ion-content>
     </ng-template>
   </ion-popover>

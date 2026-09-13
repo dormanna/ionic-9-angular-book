@@ -16,9 +16,23 @@ const requests = await readFile(inbox, 'utf8')
   .catch(() => []);
 
 const send = (res, status, body) => {
-  res.writeHead(status, { 'Content-Type': 'application/json' });
+  res.writeHead(status, {
+    'Content-Type': 'application/json',
+    // The same address answers in more than one language.
+    Vary: 'Accept-Language',
+  });
   res.end(JSON.stringify(body));
 };
+
+// English is the catalogue; a translation lays itself over it,
+// and whatever it does not cover stays English.
+const localize = (item, language) => {
+  const { Translations = {}, ...base } = item;
+  return { ...base, ...Translations[language] };
+};
+
+const languageOf = (req) =>
+  (req.headers['accept-language'] ?? '').slice(0, 2);
 
 const readBody = async (req) => {
   let raw = '';
@@ -28,24 +42,26 @@ const readBody = async (req) => {
 
 // /api/tours?q=rhine&region=SM&tourType=BO
 //           &minPrice=80&maxPrice=250 — all optional.
-const tours = (url) => {
+const tours = (url, language) => {
   const get = (name) => url.searchParams.get(name) ?? '';
   const q = get('q').toLowerCase();
   const region = get('region');
   const type = get('tourType');
   const min = Number(get('minPrice')) || 0;
   const max = Number(get('maxPrice')) || Infinity;
-  return db.tours.filter(
-    (t) =>
-      (!region || t.Region === region) &&
-      (!type || t.Tourtype === type) &&
-      t.PriceG >= min &&
-      t.PriceG <= max &&
-      (!q ||
-        `${t.Title} ${t.Description}`
-          .toLowerCase()
-          .includes(q)),
-  );
+  return db.tours
+    .map((t) => localize(t, language))
+    .filter(
+      (t) =>
+        (!region || t.Region === region) &&
+        (!type || t.Tourtype === type) &&
+        t.PriceG >= min &&
+        t.PriceG <= max &&
+        (!q ||
+          `${t.Title} ${t.Description}`
+            .toLowerCase()
+            .includes(q)),
+    );
 };
 
 // The tour photographs, /api/img/big/city.jpg and
@@ -60,9 +76,11 @@ const image = async (path) => {
 };
 
 const routes = {
-  'GET /api/tours': (url) => tours(url),
-  'GET /api/regions': () => db.regions,
-  'GET /api/tourtypes': () => db.tourtypes,
+  'GET /api/tours': (url, language) => tours(url, language),
+  'GET /api/regions': (url, language) =>
+    db.regions.map((r) => localize(r, language)),
+  'GET /api/tourtypes': (url, language) =>
+    db.tourtypes.map((t) => localize(t, language)),
   'GET /api/requests': () => requests,
 };
 
@@ -79,6 +97,7 @@ const allowOrigin = (res) => {
 const server = createServer(async (req, res) => {
   const url = new URL(req.url, `http://localhost:${PORT}`);
   const path = url.pathname;
+  const language = languageOf(req);
 
   allowOrigin(res);
   if (req.method === 'OPTIONS') {
@@ -104,13 +123,13 @@ const server = createServer(async (req, res) => {
   }
 
   const route = routes[`${req.method} ${path}`];
-  if (route) return send(res, 200, route(url));
+  if (route) return send(res, 200, route(url, language));
 
   if (req.method === 'GET' && path.startsWith('/api/tours/')) {
     const id = Number(path.split('/').pop());
     const tour = db.tours.find((t) => t.ID === id);
     return tour
-      ? send(res, 200, tour)
+      ? send(res, 200, localize(tour, language))
       : send(res, 404, { error: `No tour with ID ${id}` });
   }
 

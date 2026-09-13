@@ -23,7 +23,7 @@
               "browser": ""
             },
             "index": "src/index.html",
-            "polyfills": [],
+            "polyfills": ["@angular/localize/init"],
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
@@ -33,12 +33,9 @@
                 "output": "assets"
               }
             ],
-            "styles": [
-              "src/global.scss",
-              "src/theme/variables.scss"
-            ],
+            "styles": ["src/global.scss", "src/theme/variables.scss"],
             "scripts": [],
-            "browser": "src/main.ts"
+            "browser": "src/i18n.ts"
           },
           "configurations": {
             "production": {
@@ -66,7 +63,7 @@
               "optimization": false,
               "extractLicenses": false,
               "sourceMap": true,
-              "namedChunks": true
+              "namedChunks": false
             },
             "ci": {
               "progress": false
@@ -103,9 +100,7 @@
           "options": {
             "tsConfig": "tsconfig.spec.json",
             "buildTarget": "::development",
-            "setupFiles": [
-              "src/test-setup.ts"
-            ]
+            "setupFiles": ["src/test-setup.ts"]
           },
           "configurations": {
             "ci": {
@@ -116,20 +111,14 @@
         "lint": {
           "builder": "@angular-eslint/builder:lint",
           "options": {
-            "lintFilePatterns": [
-              "src/**/*.ts",
-              "src/**/*.html"
-            ]
+            "lintFilePatterns": ["src/**/*.ts", "src/**/*.html"]
           }
         }
       }
     }
   },
   "cli": {
-    "schematicCollections": [
-      "@schematics/angular",
-      "@ionic/angular-toolkit"
-    ]
+    "schematicCollections": ["@schematics/angular", "@ionic/angular-toolkit"]
   },
   "schematics": {
     "@schematics/angular:component": {

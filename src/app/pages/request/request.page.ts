@@ -1,5 +1,5 @@
-import { Component, computed, inject, input, signal }
-        from '@angular/core';
+import { Component, LOCALE_ID, computed, inject, input,
+         signal } from '@angular/core';
 import { applyWhen, email, form, FormField, required,
          submit }
         from '@angular/forms/signals';
@@ -53,6 +53,10 @@ export class RequestPage {
   private readonly nav = inject(NavController);
   readonly network = inject(NetworkService);
 
+  // ion-datetime follows the device, not the app.
+  readonly locale = inject(LOCALE_ID);
+  readonly firstDayOfWeek = this.locale === 'de' ? 1 : 0;
+
   readonly id = input.required<string>();
   readonly tour = computed(() => this.tours.byId(this.id()));
 
@@ -82,10 +86,10 @@ export class RequestPage {
   });
 
   readonly languages = [
-    { code: 'de', name: 'German' },
-    { code: 'en', name: 'English' },
-    { code: 'fr', name: 'French' },
-    { code: 'es', name: 'Spanish' },
+    { code: 'de', name: $localize`:@@language.de:German` },
+    { code: 'en', name: $localize`:@@language.en:English` },
+    { code: 'fr', name: $localize`:@@language.fr:French` },
+    { code: 'es', name: $localize`:@@language.es:Spanish` },
   ];
 
   readonly price = computed(() => {
@@ -110,8 +114,8 @@ export class RequestPage {
 
   private async confirm() {
     const toast = await this.toasts.create({
-      message: 'Request sent. We answer within one '
-        + 'working day.',
+      message: $localize`:@@request.sent:Request sent. We answer
+        within one working day.`,
       duration: 4000,
     });
     await toast.present();

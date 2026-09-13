@@ -2,28 +2,34 @@
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-back-button
-        [defaultHref]="'/tours/' + id()"></ion-back-button>
+        [defaultHref]="'/tours/' + id()"
+        text="Back"
+        i18n-text="@@back"></ion-back-button>
     </ion-buttons>
-    <ion-title role="heading" aria-level="1">Request</ion-title>
+    <ion-title role="heading" aria-level="1"
+               i18n="@@request.title">Request</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-padding">
   <ion-breadcrumbs>
-    <ion-breadcrumb routerLink="/tours">Tours</ion-breadcrumb>
+    <ion-breadcrumb routerLink="/tours"
+      ><span i18n="@@menu.tours">Tours</span></ion-breadcrumb>
     <ion-breadcrumb [routerLink]="['/tours', id()]">
       {{ tour()?.title }}
     </ion-breadcrumb>
-    <ion-breadcrumb aria-current="page">
-      Request
-    </ion-breadcrumb>
+    <ion-breadcrumb aria-current="page"
+      ><span i18n="@@request.title">Request</span
+    ></ion-breadcrumb>
   </ion-breadcrumbs>
 
   @if (tour(); as tour) {
     <ion-accordion-group>
       <ion-accordion value="about">
         <ion-item slot="header">
-          <ion-label>About this tour</ion-label>
+          <ion-label i18n="@@request.about">
+            About this tour
+          </ion-label>
         </ion-item>
         <div slot="content" class="ion-padding">
           {{ tour.summary }}
@@ -32,9 +38,10 @@
 
       <ion-accordion value="facts">
         <ion-item slot="header">
-          <ion-label>Key facts</ion-label>
+          <ion-label i18n="@@request.facts">Key facts</ion-label>
         </ion-item>
-        <div slot="content" class="ion-padding">
+        <div slot="content" class="ion-padding"
+             i18n="@@request.factsText">
           {{ tour.duration }} min,
           from {{ tour.price }} EUR / group
         </div>
@@ -42,20 +49,21 @@
     </ion-accordion-group>
   }
 
-  <h2>Tour details</h2>
+  <h2 i18n="@@request.details">Tour details</h2>
 
   <ion-list class="ion-margin-bottom">
     <ion-item>
-      <ion-label>Date</ion-label>
+      <ion-label i18n="@@request.date">Date</ion-label>
       <ion-datetime-button slot="end" datetime="when">
       </ion-datetime-button>
     </ion-item>
 
     <ion-item button id="people" [detail]="true">
-      <ion-label>Travelers</ion-label>
-      <ion-note slot="end">
-        {{ request().people }}
-        {{ request().people === 1 ? 'person' : 'people' }}
+      <ion-label i18n="@@request.travelers">Travelers</ion-label>
+      <ion-note slot="end" i18n="@@request.peopleCount">
+        {request().people, plural,
+          =1 {1 person}
+          other {{{ request().people }} people}}
       </ion-note>
     </ion-item>
 
@@ -63,7 +71,7 @@
       <ion-select
         interface="popover"
         [formField]="requestForm.language">
-        <div slot="label">
+        <div slot="label" i18n="@@request.language">
           Language
           <span class="language-price">
             · {{ price() }} EUR / group
@@ -78,7 +86,8 @@
     </ion-item>
 
     <ion-item>
-      <ion-toggle [formField]="requestForm.bus">
+      <ion-toggle [formField]="requestForm.bus"
+                  i18n="@@request.bus">
         Bus transfer
       </ion-toggle>
     </ion-item>
@@ -86,7 +95,8 @@
 
   <ion-modal
     [keepContentsMounted]="true"
-    aria-label="Date and time">
+    aria-label="Date and time"
+    i18n-aria-label="@@request.dateTime">
     <ng-template>
       <ion-datetime
         id="when"
@@ -95,6 +105,8 @@
         minuteValues="0,30"
         [min]="earliest"
         [max]="latest"
+        [locale]="locale"
+        [firstDayOfWeek]="firstDayOfWeek"
         [formField]="requestForm.date">
       </ion-datetime>
     </ng-template>
@@ -103,6 +115,7 @@
   <ion-modal
     trigger="people"
     aria-label="Number of people"
+    i18n-aria-label="@@request.people"
     [breakpoints]="[0, 0.3]"
     [handle]="false"
     initialBreakpoint="0.3">
@@ -121,22 +134,26 @@
       mode="md"
       fill="outline"
       label="Pickup address"
+      i18n-label="@@request.pickUp"
       label-placement="stacked"
       errorText="Where should the bus pick you up?"
+      i18n-errorText="@@request.pickUpError"
       [formField]="requestForm.pickUp">
     </ion-input>
   }
 
-  <h2>Your details</h2>
+  <h2 i18n="@@request.yours">Your details</h2>
 
   <ion-input
     class="ion-margin-bottom"
     mode="md"
     fill="outline"
     label="First name"
+    i18n-label="@@request.firstName"
     label-placement="stacked"
     autocomplete="given-name"
     errorText="Please tell us your first name."
+    i18n-errorText="@@request.firstNameError"
     [formField]="requestForm.firstName">
   </ion-input>
 
@@ -145,9 +162,11 @@
     mode="md"
     fill="outline"
     label="Last name"
+    i18n-label="@@request.lastName"
     label-placement="stacked"
     autocomplete="family-name"
     errorText="And your last name."
+    i18n-errorText="@@request.lastNameError"
     [formField]="requestForm.lastName">
   </ion-input>
 
@@ -157,9 +176,11 @@
     fill="outline"
     type="email"
     label="Email"
+    i18n-label="@@request.email"
     label-placement="stacked"
     autocomplete="email"
     errorText="Enter an address we can answer to."
+    i18n-errorText="@@request.emailError"
     [formField]="requestForm.email">
   </ion-input>
 
@@ -168,8 +189,10 @@
     mode="md"
     fill="outline"
     label="Message"
+    i18n-label="@@request.message"
     label-placement="stacked"
     helper-text="Optional — add any special requests."
+    i18n-helper-text="@@request.messageHelp"
     auto-grow="true"
     [formField]="requestForm.message">
   </ion-textarea>
@@ -179,21 +202,35 @@
     expand="block"
     [disabled]="sending()"
     (click)="send()">
-    {{ sending() ? 'Sending…' : 'Send request' }}
+    @if (sending()) {
+      <ng-container i18n="@@request.sending">
+        Sending…
+      </ng-container>
+    } @else {
+      <ng-container i18n="@@request.send">
+        Send request
+      </ng-container>
+    }
   </ion-button>
 
   <ion-text color="medium" role="status">
     @if (!network.connected()) {
-      <p>You seem to be offline. The request can be sent
-         once you are connected again.</p>
+      <p i18n="@@request.offline">
+        You seem to be offline. The request can be sent
+        once you are connected again.
+      </p>
     }
   </ion-text>
 
   @if (failed()) {
     <ion-text color="danger" role="alert">
-      <p>The request could not be sent. Try again.</p>
+      <p i18n="@@request.failed">
+        The request could not be sent. Try again.
+      </p>
     </ion-text>
   }
 
-  <p>We answer within one working day.</p>
+  <p i18n="@@request.answer">
+    We answer within one working day.
+  </p>
 </ion-content>

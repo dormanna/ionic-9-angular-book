@@ -116,3 +116,16 @@ ion-note {
 ion-item.selected {
   --color: var(--ion-color-primary);
 }
+
+ion-menu ion-footer ion-radio-group {
+  --ion-padding: 10px;
+}
+
+#appearance,
+#language {
+  margin-bottom: 0;
+}
+
+#language {
+  margin-top: 20px;
+}

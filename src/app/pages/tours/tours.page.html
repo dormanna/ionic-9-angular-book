@@ -4,16 +4,17 @@
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-title role="heading" aria-level="1">
-      Tours
+      <ng-container i18n="@@menu.tours">Tours</ng-container>&ngsp;
       <ion-badge role="img"
                  color="sky"
-                 [attr.aria-label]="shown().length + ' tours'">
+                 [attr.aria-label]="countLabel()">
         {{ shown().length }}
       </ion-badge>
     </ion-title>
     @if (filtered()) {
       <ion-buttons slot="primary">
-        <ion-button (click)="clearFilters()">
+        <ion-button (click)="clearFilters()"
+                    i18n="@@tours.clear">
           Clear filters
         </ion-button>
       </ion-buttons>
@@ -21,6 +22,7 @@
     <ion-buttons slot="end">
       <ion-button
         aria-label="Reload tours"
+        i18n-aria-label="@@tours.reload"
         (click)="retry()">
         <ion-icon
           slot="icon-only"
@@ -34,7 +36,9 @@
   <ion-toolbar>
     <ion-searchbar
       aria-label="Search all tours"
+      i18n-aria-label="@@tours.search"
       placeholder="Search all tours"
+      i18n-placeholder="@@tours.search"
       debounce="300"
       [disabled]="view() === 'favorites'"
       [value]="q()"
@@ -52,10 +56,10 @@
     [value]="view()"
     (ionChange)="setView($event.detail.value)">
     <ion-segment-button value="all">
-      <ion-label>All</ion-label>
+      <ion-label i18n="@@tours.all">All</ion-label>
     </ion-segment-button>
     <ion-segment-button value="favorites">
-      <ion-label>Favorites</ion-label>
+      <ion-label i18n="@@tours.favorites">Favorites</ion-label>
     </ion-segment-button>
   </ion-segment>
 
@@ -63,12 +67,16 @@
     <div class="ion-padding-horizontal">
       <ion-select
         label="Region"
+        i18n-label="@@tours.region"
         label-placement="stacked"
         placeholder="Anywhere"
+        i18n-placeholder="@@tours.anywhere"
         interface="popover"
         [value]="region()"
         (ionChange)="setRegion($event.detail.value)">
-        <ion-select-option value="">Anywhere</ion-select-option>
+        <ion-select-option value=""
+          ><span i18n="@@tours.anywhere">Anywhere</span
+        ></ion-select-option>
         @for (region of regions(); track region.id) {
           <ion-select-option [value]="region.id">
             {{ region.name }}
@@ -78,12 +86,16 @@
 
       <ion-select
         label="Tour type"
+        i18n-label="@@tours.type"
         label-placement="stacked"
         placeholder="Any kind"
+        i18n-placeholder="@@tours.anyKind"
         interface="popover"
         [value]="tourType()"
         (ionChange)="setTourType($event.detail.value)">
-        <ion-select-option value="">Any kind</ion-select-option>
+        <ion-select-option value=""
+          ><span i18n="@@tours.anyKind">Any kind</span
+        ></ion-select-option>
         @for (type of tourTypes(); track type.id) {
           <ion-select-option [value]="type.id">
             {{ type.name }}
@@ -95,7 +107,9 @@
     <div class="ion-padding-horizontal">
       <ion-range
         label="Group price"
+        i18n-label="@@tours.price"
         aria-label="Group price in EUR per group"
+        i18n-aria-label="@@tours.priceLabel"
         [min]="cheapest"
         [max]="dearest"
         step="20"
@@ -105,12 +119,16 @@
       </ion-range>
       <p>
         @if (maxPrice() < dearest) {
-          Up to {{ maxPrice() }} EUR
-          <span aria-hidden="true"> / </span>
-          <span class="visually-hidden">per</span>
-          group
+          <ng-container i18n="@@tours.upTo">
+            Up to {{ maxPrice() }} EUR
+            <span aria-hidden="true"> / </span>
+            <span class="visually-hidden">per</span>
+            group
+          </ng-container>
         } @else {
-          No price limit
+          <ng-container i18n="@@tours.noLimit">
+            No price limit
+          </ng-container>
         }
       </p>
     </div>
@@ -123,16 +141,18 @@
         color="primary"
         aria-hidden="true">
       </ion-spinner>
-      <p role="status">Loading tours</p>
+      <p role="status" i18n="@@tours.loading">Loading tours</p>
     </div>
   } @else if (error()) {
     <ion-text color="danger">
-      <p class="ion-padding" role="status">
+      <p class="ion-padding" role="status"
+         i18n="@@tours.failed">
         The tours could not be loaded.
       </p>
     </ion-text>
     <div class="ion-padding-horizontal">
-      <ion-button fill="outline" (click)="retry()">
+      <ion-button fill="outline" (click)="retry()"
+                  i18n="@@tours.retry">
         Try again
       </ion-button>
     </div>
@@ -149,7 +169,7 @@
           </ion-thumbnail>
           <ion-label>
             <h2>{{ tour.title }}</h2>
-            <p>
+            <p i18n="@@tours.from">
               from <span class="price">{{ tour.price }} EUR</span>
               <span aria-hidden="true"> / </span>
               <span class="visually-hidden">per</span>
@@ -160,7 +180,9 @@
         </ion-item>
       } @empty {
         <ion-item>
-          <ion-label>No tours to show.</ion-label>
+          <ion-label i18n="@@tours.none">
+            No tours to show.
+          </ion-label>
         </ion-item>
       }
     </ion-list>

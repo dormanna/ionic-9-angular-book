@@ -48,6 +48,11 @@ export class TourPage {
   readonly isFavorite =
     computed(() => this.favorites.all().includes(this.id()));
 
+  readonly favoriteLabel = computed(() =>
+    this.isFavorite()
+      ? $localize`:@@tour.unfavorite:Remove from favorites`
+      : $localize`:@@tour.favorite:Add to favorites`);
+
   readonly canShare = signal(false);
 
   constructor() {
@@ -83,7 +88,7 @@ export class TourPage {
       await Share.share({
         title: tour.title,
         text: tour.summary,
-        dialogTitle: 'Share this tour',
+        dialogTitle: $localize`:@@tour.share:Share this tour`,
       });
     } catch {
       // Canceling and failing to share are both silent here.
