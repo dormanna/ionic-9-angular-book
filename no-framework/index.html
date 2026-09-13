@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+  <title>BoB Tours</title>
+  <link rel="stylesheet"
+href="https://unpkg.com/@ionic/core@9.0.3/css/ionic.bundle.css">
+  <script type="module"
+src="https://unpkg.com/@ionic/core@9.0.3/dist/ionic/ionic.esm.js"
+  ></script>
+</head>
+<body>
+  <ion-app>
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>BoB Tours</ion-title>
+      </ion-toolbar>
+    </ion-header>
+
+    <ion-content class="ion-padding">
+      <div id="list">
+        <ion-list>
+          <ion-item button detail>
+            <ion-label>
+              <h2>Berlin by Bike</h2>
+              <p>3 hours</p>
+            </ion-label>
+          </ion-item>
+          <ion-item button detail>
+            <ion-label>
+              <h2>Hamburg Harbour</h2>
+              <p>2 hours</p>
+            </ion-label>
+          </ion-item>
+          <ion-item button detail>
+            <ion-label>
+              <h2>Munich Old Town</h2>
+              <p>90 minutes</p>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </div>
+
+      <div id="detail" hidden>
+        <ion-button fill="clear" id="back">Back</ion-button>
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title id="title"></ion-card-title>
+            <ion-card-subtitle id="duration"></ion-card-subtitle>
+          </ion-card-header>
+          <ion-card-content>
+            A tour of the city, on two wheels or on foot.
+          </ion-card-content>
+        </ion-card>
+      </div>
+    </ion-content>
+  </ion-app>
+  <script type="module">
+    const list = document.getElementById('list');
+    const detail = document.getElementById('detail');
+    const title = document.getElementById('title');
+    const duration = document.getElementById('duration');
+
+    for (const item of document.querySelectorAll('ion-item')) {
+      item.addEventListener('click', () => {
+        title.textContent = item.querySelector('h2').innerText;
+        duration.textContent = item.querySelector('p').innerText;
+        list.hidden = true;
+        detail.hidden = false;
+      });
+    }
+
+    const back = document.getElementById('back');
+    back.addEventListener('click', () => {
+      detail.hidden = true;
+      list.hidden = false;
+    });
+  </script>
+</body>
+</html>
