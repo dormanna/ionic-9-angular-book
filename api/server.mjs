@@ -1,7 +1,9 @@
 // The BoB Tours API. Node's own http server, no dependencies.
-// Start it in a second terminal:  node api/server.mjs
+// Start it in a second terminal:
+//   node --env-file-if-exists=.env api/server.mjs
 import { createServer } from 'node:http';
 import { readFile, writeFile } from 'node:fs/promises';
+import { configured, draft } from './draft.mjs';
 
 const PORT = 3000;
 const DELAY = 400; // ms, so that a loading state is visible
@@ -75,6 +77,55 @@ const image = async (path) => {
   return readFile(file).catch(() => null);
 };
 
+// Ten requests per address a minute, counted from the
+// first. Kept in this one process: a restart forgets it,
+// a second server does not share it, many phones on a
+// mobile network share one address, and an attacker can
+// change theirs.
+const LIMIT = 10;
+const WINDOW = 60_000;
+const MAX_LENGTH = 300;
+const counters = new Map();
+
+const waitFor = (address, now = Date.now()) => {
+  const slot = counters.get(address);
+  if (!slot || now - slot.start >= WINDOW) {
+    counters.set(address, { start: now, count: 1 });
+    return 0;
+  }
+  slot.count += 1;
+  return slot.count > LIMIT
+    ? Math.ceil((slot.start + WINDOW - now) / 1000)
+    : 0;
+};
+
+// POST /api/drafts { sentence, today } — the form fields
+// the sentence names. Nothing is sent on anyone's behalf.
+const drafts = async (req, res) => {
+  if (!configured()) {
+    return send(res, 503, { error: 'No API key configured' });
+  }
+  const seconds = waitFor(req.socket.remoteAddress);
+  if (seconds) {
+    res.setHeader('Retry-After', seconds);
+    return send(res, 429, { error: 'Too many requests' });
+  }
+  const body = await readBody(req).catch(() => null);
+  const { sentence, today } = body ?? {};
+  if (typeof sentence !== 'string'
+      || !/^\d{4}-\d{2}-\d{2}$/.test(today)) {
+    return send(res, 400, { error: 'sentence and today' });
+  }
+  if (sentence.length > MAX_LENGTH) {
+    return send(res, 413, { error: 'Sentence too long' });
+  }
+  const fields = await draft(sentence, today)
+    .catch(() => null);
+  return fields
+    ? send(res, 200, fields)
+    : send(res, 502, { error: 'No usable answer' });
+};
+
 const routes = {
   'GET /api/tours': (url, language) => tours(url, language),
   'GET /api/regions': (url, language) =>
@@ -103,6 +154,11 @@ const server = createServer(async (req, res) => {
   if (req.method === 'OPTIONS') {
     res.writeHead(204);
     return res.end();
+  }
+
+  // Before the delay: the wait here is the provider's.
+  if (req.method === 'POST' && path === '/api/drafts') {
+    return drafts(req, res);
   }
 
   if (req.method === 'GET') {
