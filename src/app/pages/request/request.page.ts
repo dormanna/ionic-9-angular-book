@@ -1,7 +1,7 @@
 import { Component, LOCALE_ID, computed, inject, input,
          signal } from '@angular/core';
-import { applyWhen, email, form, FormField, required,
-         submit }
+import { applyWhen, email, form, FormField, maxLength,
+         required, submit }
         from '@angular/forms/signals';
 import { RouterLink } from '@angular/router';
 import { IonHeader, IonToolbar, IonTitle, IonContent,
@@ -11,16 +11,20 @@ import { IonHeader, IonToolbar, IonTitle, IonContent,
          IonBreadcrumbs, IonBreadcrumb, IonDatetime,
          IonDatetimeButton, IonModal,
          IonInput, IonTextarea, IonButton, IonRouterLink,
-         IonText,
+         IonText, IonIcon,
          IonSelect, IonSelectOption, IonToggle,
          ToastController, NavController }
         from '@ionic/angular';
+import { addIcons } from 'ionicons';
+import { sparklesOutline } from 'ionicons/icons';
 import { TourService } from '../../services/tour.service';
 import { RequestService }
         from '../../services/request.service';
 import { NetworkService }
         from '../../services/network.service';
-import { TourRequest } from '../../models/request';
+import { ConsentService }
+        from '../../services/consent.service';
+import { Draft, TourRequest } from '../../models/request';
 import { GroupSizeComponent } from './group-size.component';
 
 const inDays = (days: number) => {
@@ -44,7 +48,7 @@ const inDays = (days: number) => {
             IonBreadcrumb, IonDatetime, IonDatetimeButton,
             IonModal, GroupSizeComponent,
             IonButton, IonInput, IonTextarea, IonText,
-            IonSelect, IonSelectOption, IonToggle],
+            IonSelect, IonSelectOption, IonToggle, IonIcon],
 })
 export class RequestPage {
   private readonly tours = inject(TourService);
@@ -52,6 +56,7 @@ export class RequestPage {
   private readonly toasts = inject(ToastController);
   private readonly nav = inject(NavController);
   readonly network = inject(NetworkService);
+  readonly consent = inject(ConsentService);
 
   // ion-datetime follows the device, not the app.
   readonly locale = inject(LOCALE_ID);
@@ -105,6 +110,19 @@ export class RequestPage {
   readonly sending = signal(false);
   readonly failed = signal(false);
 
+  // The same limit as the API's.
+  readonly maxSentence = 300;
+  readonly sentence = form(signal(''), (p) => {
+    maxLength(p, this.maxSentence);
+  });
+  readonly drafting = signal(false);
+  readonly reading = signal(false);
+  readonly unreadable = signal(false);
+
+  constructor() {
+    addIcons({ sparklesOutline });
+  }
+
   private payload(): TourRequest {
     const request = this.request();
     return request.bus
@@ -140,6 +158,71 @@ export class RequestPage {
       }
       return undefined;
     });
+  }
+
+  async fillIn() {
+    this.unreadable.set(false);
+    this.reading.set(true);
+    try {
+      const draft = await this.requests.draft(
+        this.sentence().value().trim(), inDays(0));
+      this.apply(draft);
+      this.drafting.set(false);
+    } catch {
+      this.unreadable.set(true);
+    } finally {
+      this.reading.set(false);
+    }
+  }
+
+  // Switching it on is the consent; off withdraws it.
+  async allow(on: boolean) {
+    await (on ? this.consent.give() : this.consent.withdraw());
+  }
+
+  // Only what the form's own controls could have produced.
+  // Anything else keeps its value.
+  private apply(draft: Draft) {
+    const form = this.requestForm;
+    const { people, date, time, bus, pickUp, language,
+            firstName, lastName } = draft;
+    if (people !== null
+        && this.groupSizes().includes(people)) {
+      form.people().value.set(people);
+      form.people().markAsDirty();
+    }
+    const current = this.request().date
+      ?? `${this.earliest}T09:30:00`;
+    const day = date !== null && date >= this.earliest
+      && date <= this.latest ? date : current.slice(0, 10);
+    // The picker offers 9:00 to 17:30 in half hours.
+    const clock = time !== null
+      && /^(09|1[0-7]):(00|30)$/.test(time)
+      ? time : current.slice(11, 16);
+    if (`${day}T${clock}:00` !== current) {
+      form.date().value.set(`${day}T${clock}:00`);
+      form.date().markAsDirty();
+    }
+    if (bus || pickUp) {
+      form.bus().value.set(true);
+      form.bus().markAsDirty();
+    }
+    if (pickUp) {
+      form.pickUp().value.set(pickUp);
+      form.pickUp().markAsDirty();
+    }
+    if (language !== null) {
+      form.language().value.set(language);
+      form.language().markAsDirty();
+    }
+    if (firstName) {
+      form.firstName().value.set(firstName);
+      form.firstName().markAsDirty();
+    }
+    if (lastName) {
+      form.lastName().value.set(lastName);
+      form.lastName().markAsDirty();
+    }
   }
 
   readonly groupSizes = computed(() =>

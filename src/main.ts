@@ -13,6 +13,8 @@ import { AppComponent } from './app/app.component';
 import { ThemeService } from './app/services/theme.service';
 import { FavoritesService }
         from './app/services/favorites.service';
+import { ConsentService }
+        from './app/services/consent.service';
 import { provideServiceWorker }
         from '@angular/service-worker';
 import { Capacitor } from '@capacitor/core';
@@ -29,8 +31,10 @@ bootstrapApplication(AppComponent, {
     provideAppInitializer(async () => {
       const theme = inject(ThemeService);
       const favorites = inject(FavoritesService);
+      const consent = inject(ConsentService);
       await theme.restore();
       await favorites.restore();
+      await consent.restore();
     }),
     provideRouter(routes, withPreloading(PreloadAllModules), withComponentInputBinding()),
     // Only the web delivery benefits from a cache. A shell

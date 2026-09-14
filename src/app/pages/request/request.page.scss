@@ -28,3 +28,25 @@ ion-item ion-note,
 .language-price {
   color: var(--ion-color-medium);
 }
+
+#assistant-title {
+  margin: 12px 0 20px;
+}
+
+.assistant-send {
+  margin-top: 28px;
+}
+
+.consent {
+  margin: 28px 0 16px;
+}
+
+// Should it ever be longer than a line, it wraps.
+.consent::part(label) {
+  white-space: normal;
+}
+
+.consent-detail {
+  margin-top: 0;
+  font-size: 0.85rem;
+}

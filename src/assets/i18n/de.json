@@ -85,6 +85,15 @@
     "tours.retry": "Noch einmal versuchen",
     "tours.from": "ab {$START_TAG_SPAN}{$INTERPOLATION} EUR{$CLOSE_TAG_SPAN}{$START_TAG_SPAN_1} / {$CLOSE_TAG_SPAN}{$START_TAG_SPAN_2}pro{$CLOSE_TAG_SPAN} Gruppe",
     "tours.none": "Keine Touren zu zeigen.",
-    "tours.count": "{$count} Touren"
+    "tours.count": "{$count} Touren",
+    "request.sentence": "Deine Anfrage in einem Satz",
+    "request.reading": "Wird gelesen …",
+    "request.fillIn": "Formular ausfüllen",
+    "request.consentNote": "Daten an Anthropic senden",
+    "request.unreadable": "Den Satz konnten wir nicht lesen. Füll das Formular bitte selbst aus.",
+    "request.consentMessage": "Gesendet werden dein Satz, das heutige Datum und eine Beschreibung des Formulars.",
+    "request.draftOpen": "Beschreib deine Anfrage in Worten",
+    "request.sentenceHelp": "Tippen oder diktieren.",
+    "request.assistant": "Ausfüllassistent"
   }
 }

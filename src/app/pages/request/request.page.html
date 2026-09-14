@@ -8,6 +8,18 @@
     </ion-buttons>
     <ion-title role="heading" aria-level="1"
                i18n="@@request.title">Request</ion-title>
+    <ion-buttons slot="end">
+      <ion-button
+        aria-label="Describe your request in words"
+        i18n-aria-label="@@request.draftOpen"
+        (click)="drafting.set(true)">
+        <ion-icon
+          slot="icon-only"
+          aria-hidden="true"
+          name="sparkles-outline">
+        </ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -109,6 +121,78 @@
         [firstDayOfWeek]="firstDayOfWeek"
         [formField]="requestForm.date">
       </ion-datetime>
+    </ng-template>
+  </ion-modal>
+
+  <ion-modal
+    [isOpen]="drafting()"
+    (didDismiss)="drafting.set(false)"
+    aria-label="Form assistant"
+    i18n-aria-label="@@request.assistantDialog"
+    [breakpoints]="[0, 0.75, 1]"
+    initialBreakpoint="0.75">
+    <ng-template>
+      <ion-content class="ion-padding">
+        <h2 id="assistant-title" i18n="@@request.assistant">
+          Form assistant
+        </h2>
+        <ion-textarea
+          mode="md"
+          fill="outline"
+          label="Your request in one sentence"
+          i18n-label="@@request.sentence"
+          label-placement="stacked"
+          helper-text="Type it or dictate it."
+          i18n-helper-text="@@request.sentenceHelp"
+          auto-grow="true"
+          [counter]="true"
+          [maxlength]="maxSentence"
+          [formField]="sentence">
+        </ion-textarea>
+
+        <ion-toggle
+          class="consent"
+          justify="space-between"
+          [checked]="consent.given()"
+          (ionChange)="allow($event.detail.checked)"
+          i18n="@@request.consentNote">
+          Send data to Anthropic
+        </ion-toggle>
+        <ion-text color="medium">
+          <p class="consent-detail"
+             i18n="@@request.consentMessage">
+            Sent: your sentence, today's date and a description
+            of the form.
+          </p>
+        </ion-text>
+
+        <ion-button
+          class="assistant-send"
+          expand="block"
+          [disabled]="reading() || !consent.given()
+                      || !network.connected()
+                      || !sentence().value().trim()"
+          (click)="fillIn()">
+          @if (reading()) {
+            <ng-container i18n="@@request.reading">
+              Reading…
+            </ng-container>
+          } @else {
+            <ng-container i18n="@@request.fillIn">
+              Fill in the form
+            </ng-container>
+          }
+        </ion-button>
+
+        @if (unreadable()) {
+          <ion-text color="danger" role="alert">
+            <p i18n="@@request.unreadable">
+              That sentence could not be read. Please fill in
+              the form yourself.
+            </p>
+          </ion-text>
+        }
+      </ion-content>
     </ng-template>
   </ion-modal>
 

@@ -1,7 +1,7 @@
 import { Service, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
-import { TourRequest } from '../models/request';
+import { Draft, TourRequest } from '../models/request';
 import { apiUrl } from './api';
 
 export interface SavedRequest extends TourRequest {
@@ -17,6 +17,16 @@ export class RequestService {
       this.http.post<SavedRequest>(
         apiUrl('/api/requests'),
         request,
+      ),
+    );
+  }
+
+  // today as YYYY-MM-DD, from this device's calendar.
+  draft(sentence: string, today: string) {
+    return firstValueFrom(
+      this.http.post<Draft>(
+        apiUrl('/api/drafts'),
+        { sentence, today },
       ),
     );
   }
