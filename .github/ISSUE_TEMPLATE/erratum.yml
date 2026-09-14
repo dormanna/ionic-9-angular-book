@@ -1,0 +1,52 @@
+name: Erratum
+description: Report an error in the book "Ionic 9" or in the code of this repository.
+title: "Erratum: section "
+labels: ["erratum"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for taking the time. Confirmed errors are collected in
+        [ERRATA.md](https://github.com/dormanna/ionic-9-angular-book/blob/main/ERRATA.md) — please check there first.
+        This tracker is for errors in the book and its code only; for questions
+        about Ionic in general, the Ionic Forum and Stack Overflow are better places.
+  - type: input
+    id: section
+    attributes:
+      label: Section
+      description: The section number as printed, e.g. 6.8.
+      placeholder: "6.8"
+    validations:
+      required: true
+  - type: input
+    id: page
+    attributes:
+      label: Page
+      description: The printed page number, if you have the book.
+      placeholder: "142"
+  - type: input
+    id: tag
+    attributes:
+      label: Tag
+      description: If the error is in the code, the tag you checked out or downloaded.
+      placeholder: "6.8"
+  - type: textarea
+    id: printed
+    attributes:
+      label: What the book or the code says
+      description: Quote the sentence, the listing lines or the command.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What happens instead, or what would be correct
+      description: For code, include the error message or what you saw on screen.
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      description: Operating system, Node version (`node --version`) and, for native builds, Xcode or Android Studio.
+      placeholder: "macOS 26, Node 26.8.2"

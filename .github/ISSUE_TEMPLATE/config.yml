@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Ionic Forum
+    url: https://forum.ionicframework.com/
+    about: Questions about Ionic that are not about an error in the book.
+  - name: Stack Overflow
+    url: https://stackoverflow.com/questions/tagged/ionic-framework
+    about: Programming questions about Ionic apps.
