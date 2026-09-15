@@ -30,6 +30,9 @@ takes requests; it has no dependencies.
 - Icons are registered explicitly with `addIcons()`.
 - Logic that computes something lives in a plain function
   with its own test.
+- Code that talks to a plugin, the device or the network
+  has a test of its own against a fake of that outside,
+  even when the tests of its callers replace it.
 
 ## Permissions
 
