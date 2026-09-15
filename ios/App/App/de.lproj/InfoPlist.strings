@@ -1,0 +1,5 @@
+/* German texts for the keys in Info.plist. The English texts stay in Info.plist itself. */
+
+/* Shown when "Nearest first" asks for the location. */
+"NSLocationWhenInUseUsageDescription" = "BoB Tours verwendet deinen Standort nur, um die Touren danach zu sortieren, wie weit entfernt sie beginnen. Er wird weder gespeichert noch irgendwohin gesendet.";
+"NSLocationAlwaysAndWhenInUseUsageDescription" = "BoB Tours verwendet deinen Standort nur, um die Touren danach zu sortieren, wie weit entfernt sie beginnen. Er wird weder gespeichert noch irgendwohin gesendet.";

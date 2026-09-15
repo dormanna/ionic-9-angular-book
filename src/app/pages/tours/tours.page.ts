@@ -1,5 +1,5 @@
-import { Component, computed, effect, inject, input,
-         numberAttribute, signal } from '@angular/core';
+import { Component, LOCALE_ID, computed, effect, inject,
+         input, numberAttribute, signal } from '@angular/core';
 import { Params, Router, RouterLink }
         from '@angular/router';
 import { IonHeader, IonToolbar, IonTitle, IonContent,
@@ -16,9 +16,15 @@ import { refreshOutline } from 'ionicons/icons';
 import { TourService } from '../../services/tour.service';
 import { FavoritesService }
         from '../../services/favorites.service';
+import { LocationService, Unlocated }
+        from '../../services/location.service';
+import { Coordinates, formatDistance, nearestFirst }
+        from './distance';
 
 const CHEAPEST = 80;
 const DEAREST = 400;
+
+export type SortOrder = 'catalog' | 'distance';
 
 @Component({
   selector: 'app-tours',
@@ -36,6 +42,8 @@ export class ToursPage {
   private readonly service = inject(TourService);
   private readonly favorites = inject(FavoritesService);
   private readonly router = inject(Router);
+  private readonly location = inject(LocationService);
+  private readonly locale = inject(LOCALE_ID);
 
   readonly tours = this.service.all();
   readonly view = signal<'all' | 'favorites'>('all');
@@ -47,6 +55,28 @@ export class ToursPage {
     }
     const ids = this.favorites.all();
     return tours.filter((tour) => ids.includes(tour.id));
+  });
+
+  // Not in the URL: a shared link must not open with a
+  // request for the user's location.
+  readonly sort = signal<SortOrder>('catalog');
+  readonly here = signal<Coordinates | null>(null);
+  readonly locating = signal(false);
+  readonly unlocated = signal<Unlocated | null>(null);
+  private lookups = 0;
+
+  readonly rows = computed(() => {
+    const tours = this.shown();
+    const here = this.here();
+    if (this.sort() !== 'distance' || !here) {
+      return tours.map((tour) => ({ tour, distance: '' }));
+    }
+    return nearestFirst(tours, here).map(({ tour, km }) => ({
+      tour,
+      distance: Number.isFinite(km)
+        ? formatDistance(km, this.locale)
+        : '',
+    }));
   });
 
   readonly countLabel = computed(() => {
@@ -103,6 +133,43 @@ export class ToursPage {
   refresh(event: RefresherCustomEvent) {
     this.finishPull = () => event.detail.complete();
     this.service.reload();
+    if (this.sort() === 'distance') {
+      this.locate();
+    }
+  }
+
+  setSort(value: string | undefined) {
+    const sort = value === 'distance' ? 'distance' : 'catalog';
+    this.sort.set(sort);
+    this.unlocated.set(null);
+    if (sort === 'distance') {
+      return this.locate();
+    }
+    // Whatever a lookup still in flight finds is not wanted.
+    this.lookups++;
+    this.locating.set(false);
+    return Promise.resolve();
+  }
+
+  private async locate() {
+    const lookup = ++this.lookups;
+    this.locating.set(true);
+    const result = await this.location.locate();
+    // Only the latest lookup has a say.
+    if (lookup !== this.lookups) {
+      return;
+    }
+    this.locating.set(false);
+    if (this.sort() !== 'distance') {
+      return;
+    }
+    if (result.found) {
+      this.here.set(result.here);
+    } else {
+      // Back to an order the list can keep, and say why.
+      this.sort.set('catalog');
+      this.unlocated.set(result.reason);
+    }
   }
 
   setView(value: string | number | undefined) {

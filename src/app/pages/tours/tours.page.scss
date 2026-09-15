@@ -24,3 +24,8 @@ ion-note[slot="end"] {
   max-width: 25%;
   overflow-wrap: normal;
 }
+
+.sort-note {
+  margin-top: 4px;
+  color: rgba(var(--ion-text-color-rgb), 0.6);
+}

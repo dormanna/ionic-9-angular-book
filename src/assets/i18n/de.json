@@ -94,6 +94,15 @@
     "request.consentMessage": "Gesendet werden dein Satz, das heutige Datum und eine Beschreibung des Formulars.",
     "request.draftOpen": "Beschreib deine Anfrage in Worten",
     "request.sentenceHelp": "Tippen oder diktieren.",
-    "request.assistant": "Ausfüllassistent"
+    "request.assistant": "Ausfüllassistent",
+    "request.assistantDialog": "Ausfüllassistent",
+    "tours.sort": "Sortieren nach",
+    "tours.catalogOrder": "Katalogreihenfolge",
+    "tours.nearest": "Nächste zuerst",
+    "tours.locating": "Dein Standort wird ermittelt …",
+    "tours.locationDenied": "Zum Sortieren nach Entfernung brauchen wir deinen Standort. Erlaube BoB Tours in deinen Einstellungen, ihn zu verwenden, und versuch es dann noch einmal.",
+    "tours.locationOff": "Die Ortungsdienste sind ausgeschaltet, daher können die Touren nicht nach Entfernung sortiert werden.",
+    "tours.locationFailed": "Dein Standort konnte nicht ermittelt werden, daher bleiben die Touren in der Katalogreihenfolge.",
+    "tours.away": "{$INTERPOLATION} entfernt"
   }
 }

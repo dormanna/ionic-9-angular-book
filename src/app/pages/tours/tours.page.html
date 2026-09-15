@@ -134,6 +134,55 @@
     </div>
   }
 
+  <div class="ion-padding-horizontal">
+    <ion-select
+      label="Sort by"
+      i18n-label="@@tours.sort"
+      label-placement="stacked"
+      interface="popover"
+      [value]="sort()"
+      (ionChange)="setSort($event.detail.value)">
+      <ion-select-option value="catalog"
+        ><span i18n="@@tours.catalogOrder">Catalog order</span
+      ></ion-select-option>
+      <ion-select-option value="distance"
+        ><span i18n="@@tours.nearest">Nearest first</span
+      ></ion-select-option>
+    </ion-select>
+
+    @if (locating()) {
+      <p class="sort-note" role="status"
+         i18n="@@tours.locating">
+        Finding your location…
+      </p>
+    } @else {
+      @switch (unlocated()) {
+        @case ('denied') {
+          <p class="sort-note" role="status"
+             i18n="@@tours.locationDenied">
+            Sorting by distance needs your location. Allow
+            BoB Tours to use it in your settings, then try
+            again.
+          </p>
+        }
+        @case ('off') {
+          <p class="sort-note" role="status"
+             i18n="@@tours.locationOff">
+            Location services are turned off, so the tours
+            cannot be sorted by distance.
+          </p>
+        }
+        @case ('failed') {
+          <p class="sort-note" role="status"
+             i18n="@@tours.locationFailed">
+            Your location could not be determined, so the
+            tours stay in catalog order.
+          </p>
+        }
+      }
+    }
+  </div>
+
   @if (firstLoad() && tours().length === 0) {
     <div class="ion-padding ion-text-center">
       <ion-spinner
@@ -158,7 +207,8 @@
     </div>
   } @else {
     <ion-list>
-      @for (tour of shown(); track tour.id) {
+      @for (row of rows(); track row.tour.id) {
+        @let tour = row.tour;
         <ion-item detail="true" [routerLink]="['/tours', tour.id]">
           <ion-thumbnail slot="start">
             <img
@@ -175,6 +225,9 @@
               <span class="visually-hidden">per</span>
               group
             </p>
+            @if (row.distance) {
+              <p i18n="@@tours.away">{{ row.distance }} away</p>
+            }
           </ion-label>
           <ion-note slot="end">{{ tour.duration }} min</ion-note>
         </ion-item>
