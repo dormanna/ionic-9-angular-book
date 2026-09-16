@@ -19,6 +19,9 @@ export const routes: Routes = [
       import('./pages/request/request.page')
         .then((m) => m.RequestPage),
     canDeactivate: [unsavedChanges] },
+  { path: 'plan',
+    loadComponent: () =>
+      import('./pages/plan/plan.page').then((m) => m.PlanPage) },
   { path: 'about',
     loadComponent: () =>
       import('./pages/about/about.page')

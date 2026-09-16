@@ -126,6 +126,34 @@ describe('ToursPage, sorted by distance', () => {
       .toEqual(['Tour markt', 'Tour cologne']);
   });
 
+  const planButton = (fixture: { nativeElement: HTMLElement }) =>
+    fixture.nativeElement
+      .querySelector('ion-button[routerLink="/plan"]');
+
+  it('offers to plan a day from two favorites', async () => {
+    const fixture = await open();
+
+    expect(planButton(fixture)).toBe(null);
+
+    fixture.componentInstance.setView('favorites');
+    await fixture.whenStable();
+
+    expect(planButton(fixture)?.textContent)
+      .toContain('Plan My Day');
+  });
+
+  it('offers no day for a single favorite', async () => {
+    TestBed.overrideProvider(FavoritesService, {
+      useValue: { all: signal(['markt']) },
+    });
+    const fixture = await open();
+
+    fixture.componentInstance.setView('favorites');
+    await fixture.whenStable();
+
+    expect(planButton(fixture)).toBe(null);
+  });
+
   it('goes back to catalog order when asked', async () => {
     const fixture = await open();
     const page = fixture.componentInstance;

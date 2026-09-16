@@ -12,7 +12,8 @@ import { IonHeader, IonToolbar, IonTitle, IonContent,
          RefresherCustomEvent }
         from '@ionic/angular';
 import { addIcons } from 'ionicons';
-import { refreshOutline } from 'ionicons/icons';
+import { calendarOutline, refreshOutline }
+        from 'ionicons/icons';
 import { TourService } from '../../services/tour.service';
 import { FavoritesService }
         from '../../services/favorites.service';
@@ -79,6 +80,13 @@ export class ToursPage {
     }));
   });
 
+  // A day can only be planned from two tours on, and only
+  // the favorites make one.
+  readonly canPlan = computed(
+    () => this.view() === 'favorites'
+      && this.favorites.all().length >= 2,
+  );
+
   readonly countLabel = computed(() => {
     const count = this.shown().length;
     return $localize`:@@tours.count:${count}:count: tours`;
@@ -111,7 +119,7 @@ export class ToursPage {
   private finishPull: (() => void) | null = null;
 
   constructor() {
-    addIcons({ refreshOutline });
+    addIcons({ refreshOutline, calendarOutline });
     effect(() => {
       if (!this.service.isLoading() && this.finishPull) {
         this.finishPull();

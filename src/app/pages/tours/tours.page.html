@@ -63,6 +63,19 @@
     </ion-segment-button>
   </ion-segment>
 
+  @if (canPlan()) {
+    <div class="ion-padding">
+      <ion-button expand="block" routerLink="/plan">
+        <ion-icon
+          slot="start"
+          name="calendar-outline"
+          aria-hidden="true">
+        </ion-icon>
+        <ng-container i18n="@@plan.title">Plan My Day</ng-container>
+      </ion-button>
+    </div>
+  }
+
   @if (view() === 'all') {
     <div class="ion-padding-horizontal">
       <ion-select

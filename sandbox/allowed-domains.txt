@@ -1,0 +1,6 @@
+# The only hosts the task may reach.
+api.anthropic.com
+registry.npmjs.org
+angular.dev
+ionicframework.com
+capacitorjs.com

@@ -1,0 +1,35 @@
+.section {
+  margin: 20px 16px 8px;
+  font-size: 1.1rem;
+}
+
+.step ion-icon[slot="start"] {
+  color: var(--ion-color-primary);
+}
+
+.step-leg {
+  --min-height: 40px;
+
+  ion-label h3 {
+    color: rgba(var(--ion-text-color-rgb), 0.7);
+  }
+}
+
+.step ion-note[slot="end"] {
+  align-self: center;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.eat {
+  margin-top: 4px;
+  margin-inline-start: -8px;
+}
+
+.plan-note {
+  color: rgba(var(--ion-text-color-rgb), 0.6);
+}
+
+ion-text[color="danger"] .plan-note {
+  color: inherit;
+}

@@ -1,0 +1,196 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button
+        defaultHref="/tours"
+        text="Back"
+        i18n-text="@@back"></ion-back-button>
+    </ion-buttons>
+    <ion-title role="heading" aria-level="1"
+               i18n="@@plan.title">Plan My Day</ion-title>
+    @if (canShare() && tours().length >= 2) {
+      <ion-buttons slot="end">
+        <ion-button
+          (click)="share()"
+          aria-label="Share this plan"
+          i18n-aria-label="@@plan.share">
+          <ion-icon
+            slot="icon-only"
+            name="share-social-outline"
+            aria-hidden="true">
+          </ion-icon>
+        </ion-button>
+      </ion-buttons>
+    }
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  @if (loading() && tours().length < 2) {
+    <div class="ion-padding ion-text-center">
+      <ion-spinner
+        name="crescent"
+        color="primary"
+        aria-hidden="true">
+      </ion-spinner>
+      <p role="status" i18n="@@plan.loading">
+        Loading tours
+      </p>
+    </div>
+  } @else if (tours().length < 2) {
+    <div class="ion-padding">
+      <p role="status" i18n="@@plan.needsTwo">
+        A day needs at least two favorite tours. Add another
+        one to your favorites.
+      </p>
+    </div>
+  } @else {
+    <ion-list class="ion-margin-bottom">
+      <ion-item>
+        <ion-label i18n="@@plan.date">Date</ion-label>
+        <ion-datetime-button slot="end" datetime="planDate">
+        </ion-datetime-button>
+      </ion-item>
+
+      <ion-item>
+        <ion-label i18n="@@plan.start">Start time</ion-label>
+        <ion-datetime-button slot="end" datetime="planStart">
+        </ion-datetime-button>
+      </ion-item>
+
+      <ion-item>
+        <ion-toggle
+          [checked]="bus()"
+          (ionChange)="bus.set($event.detail.checked)"
+          i18n="@@plan.bus">
+          Bus transfer
+        </ion-toggle>
+      </ion-item>
+
+      <ion-item>
+        <ion-toggle
+          [checked]="lunch()"
+          (ionChange)="lunch.set($event.detail.checked)"
+          i18n="@@plan.lunch"
+          >Lunch break</ion-toggle
+        >
+      </ion-item>
+    </ion-list>
+
+    <ion-modal [keepContentsMounted]="true">
+      <ng-template>
+        <ion-datetime
+          id="planDate"
+          presentation="date"
+          [min]="today"
+          [locale]="locale"
+          [firstDayOfWeek]="firstDayOfWeek"
+          [value]="date()"
+          (ionChange)="setDate($event.detail.value)">
+        </ion-datetime>
+      </ng-template>
+    </ion-modal>
+
+    <ion-modal [keepContentsMounted]="true">
+      <ng-template>
+        <ion-datetime
+          id="planStart"
+          presentation="time"
+          [locale]="locale"
+          [value]="startTime()"
+          (ionChange)="setStart($event.detail.value)">
+        </ion-datetime>
+      </ng-template>
+    </ion-modal>
+
+    <h2 class="section" i18n="@@plan.yourTours">
+      Your tours
+    </h2>
+    <ion-reorder-group
+      [disabled]="false"
+      (ionReorderEnd)="reorder($event)">
+      @for (tour of tours(); track tour.id) {
+        <ion-item>
+          <ion-label>{{ tour.title }}</ion-label>
+          <ion-buttons slot="end">
+            <ion-button
+              [disabled]="$first"
+              [attr.aria-label]="moveLabel(tour.title, true)"
+              (click)="move($index, $index - 1)">
+              <ion-icon
+                slot="icon-only"
+                name="arrow-up-outline"
+                aria-hidden="true">
+              </ion-icon>
+            </ion-button>
+            <ion-button
+              [disabled]="$last"
+              [attr.aria-label]="moveLabel(tour.title, false)"
+              (click)="move($index, $index + 1)">
+              <ion-icon
+                slot="icon-only"
+                name="arrow-down-outline"
+                aria-hidden="true">
+              </ion-icon>
+            </ion-button>
+          </ion-buttons>
+          <ion-reorder slot="end"></ion-reorder>
+        </ion-item>
+      }
+    </ion-reorder-group>
+
+    <h2 class="section" i18n="@@plan.yourDay">Your day</h2>
+    <ion-list>
+      @for (row of rows(); track $index) {
+        <ion-item [class]="'step step-' + row.kind">
+          <ion-icon
+            slot="start"
+            [name]="row.icon"
+            aria-hidden="true">
+          </ion-icon>
+          <ion-label>
+            <h3>{{ row.text }}</h3>
+            <p>{{ row.note }}</p>
+            @if (row.place; as place) {
+              <ion-button
+                class="eat"
+                fill="clear"
+                size="small"
+                (click)="eatHere(place)">
+                <ion-icon
+                  slot="start"
+                  name="restaurant-outline"
+                  aria-hidden="true">
+                </ion-icon>
+                <ng-container i18n="@@plan.eat">
+                  Places to eat nearby
+                </ng-container>
+              </ion-button>
+            }
+          </ion-label>
+          <ion-note slot="end">{{ row.time }}</ion-note>
+        </ion-item>
+      }
+    </ion-list>
+
+    <div class="ion-padding-horizontal">
+      @if (plan().tooFar) {
+        <ion-text color="danger">
+          <p class="plan-note" role="alert">
+            {{ tooFarText }}
+          </p>
+        </ion-text>
+      }
+      @if (plan().noLunchRoom) {
+        <p class="plan-note" role="status">
+          {{ noLunchText }}
+        </p>
+      }
+      @if (plan().late) {
+        <p class="plan-note" role="status">
+          {{ lateText() }}
+        </p>
+      }
+    </div>
+  }
+</ion-content>

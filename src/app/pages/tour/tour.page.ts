@@ -9,7 +9,6 @@ import { IonHeader, IonToolbar, IonTitle, IonContent,
          IonFabList, IonGrid, IonRow, IonCol, IonRouterLink,
          AnimationController }
         from '@ionic/angular';
-import { Capacitor } from '@capacitor/core';
 import { Share } from '@capacitor/share';
 import { addIcons } from 'ionicons';
 import { heart, heartOutline, timeOutline, peopleOutline,
@@ -19,6 +18,7 @@ import { heart, heartOutline, timeOutline, peopleOutline,
 import { TourService } from '../../services/tour.service';
 import { FavoritesService }
         from '../../services/favorites.service';
+import { openMapSearch } from '../../services/maps';
 
 @Component({
   selector: 'app-tour',
@@ -67,16 +67,9 @@ export class TourPage {
 
   openDirections() {
     const tour = this.tour();
-    if (!tour) {
-      return;
+    if (tour) {
+      openMapSearch(tour.startingPoint);
     }
-    const { lat, lng, location } = tour.startingPoint;
-    const url = Capacitor.getPlatform() === 'android'
-      ? 'https://www.google.com/maps/search/?api=1'
-        + `&query=${lat},${lng}`
-      : `https://maps.apple.com/?ll=${lat},${lng}`
-        + `&q=${encodeURIComponent(location)}`;
-    window.open(url, '_blank');
   }
 
   async share() {
