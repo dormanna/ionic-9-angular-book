@@ -58,4 +58,5 @@ content, not interface, and carries no marker.
 ## Commits
 
 One line, with a paragraph below it when the reason needs
-one. Never push; commit locally.
+one. Push only to `origin main` when Andreas asks; never
+force-push, never move a tag.
